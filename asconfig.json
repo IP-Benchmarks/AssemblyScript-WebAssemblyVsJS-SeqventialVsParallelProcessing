@@ -1,0 +1,24 @@
+{
+    "targets": {
+        "debug": {
+            "binaryFile": "wasm/unoptimized.wasm",
+            "textFile": "wasm/unoptimized.wat",
+            "sourceMap": true,
+            "debug": true,
+            "jsFile": "wasm/unoptimized.js",
+            "tsdFile": "wasm/unoptimized.d.ts"
+        },
+        "release": {
+            "binaryFile": "wasm/optimized.wasm",
+            "textFile": "wasm/optimized.wat",
+            "sourceMap": true,
+            "optimizeLevel": 3,
+            "shrinkLevel": 1,
+            "converge": true,
+            "noAssert": false,
+            "jsFile": "wasm/optimized.js",
+            "tsdFile": "wasm/optimized.d.ts"
+        }
+    },
+    "options": {}
+}

@@ -1,0 +1,34 @@
+{
+    "name": "assemblyscript-webassemblyvsjs-seqventialvsparallelprocessing",
+    "version": "1.0.0",
+    "description": "Performance comparation of WebAssembly and Javascript in sequential and parallel workloads in different available runtimes like Web, Node and Deno.",
+    "main": "index.js",
+    "scripts": {
+        "test": "node tests",
+        "asbuild:untouched": "asc assembly/index.ts --target debug",
+        "asbuild:optimized": "asc assembly/index.ts --target release",
+        "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+        "copy:wasm": "copyfiles ./wasm/* ./dist/",
+        "build": "tsc && npm run asbuild && npm run copy:wasm",
+        "start": "npm run build && cd ./dist && node ./dist/index.js && cd .."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/IulianOctavianPreda/AssemblyScript-WebAssemblyVsJS-SeqventialVsParallelProcessing.git"
+    },
+    "author": "Iulian Preda",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/IulianOctavianPreda/AssemblyScript-WebAssemblyVsJS-SeqventialVsParallelProcessing/issues"
+    },
+    "homepage": "https://github.com/IulianOctavianPreda/AssemblyScript-WebAssemblyVsJS-SeqventialVsParallelProcessing#readme",
+    "dependencies": {
+        "@assemblyscript/loader": "^0.18.24",
+        "typescript": "^4.2.4"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.37",
+        "assemblyscript": "^0.18.24",
+        "copyfiles": "^2.4.1"
+    }
+}
