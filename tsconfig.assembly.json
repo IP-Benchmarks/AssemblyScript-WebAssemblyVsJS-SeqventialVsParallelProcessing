@@ -1,0 +1,8 @@
+{
+    "extends": "assemblyscript/std/assembly.json",
+    "include": ["./assembly/**/*.ts"],
+    "compilerOptions": {
+        "outDir": "./wasm/js" /* Redirect output structure to the directory. */,
+        "module": "umd"
+    }
+}
