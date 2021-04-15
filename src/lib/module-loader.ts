@@ -17,14 +17,19 @@ async function getWasmModule(pathToModule: string): Promise<any> {
     return fetch(pathToModule);
 }
 
-export async function loadJsModule(pathToModule: string) {
+export async function loadJsModule<T = Record<string, unknown>>(pathToModule: string) {
     if (!!require) {
-        return require(await getPathRelativeToTheRunningScript(pathToModule));
+        return require(await getPathRelativeToTheRunningScript(pathToModule)) as loader.ASUtil & T;
     }
-    return await import(pathToModule);
+    return (await import(pathToModule)) as loader.ASUtil & T;
 }
 
-export async function loadWasmModule(path: string, imports: Imports | undefined = {}) {
+export async function loadWasmModule<T = Record<string, unknown>>(
+    path: string,
+    imports: Imports = {
+        env: {},
+    }
+) {
     const module = await getWasmModule(path);
-    return await loader.instantiate(module, imports);
+    return loader.instantiateSync(module, imports).exports as loader.ASUtil & T;
 }
