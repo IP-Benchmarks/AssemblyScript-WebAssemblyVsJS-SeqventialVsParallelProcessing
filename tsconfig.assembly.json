@@ -3,6 +3,7 @@
     "include": ["./assembly/**/*.ts"],
     "compilerOptions": {
         "outDir": "./wasm/js" /* Redirect output structure to the directory. */,
-        "module": "umd"
+        "module": "umd",
+        "declaration": true
     }
 }

@@ -18,6 +18,7 @@ async function getWasmModule(pathToModule: string): Promise<any> {
 }
 
 export async function loadJsModule<T = Record<string, unknown>>(pathToModule: string) {
+    patchIdof();
     if (!!require) {
         return require(await getPathRelativeToTheRunningScript(pathToModule)) as loader.ASUtil & T;
     }
@@ -32,4 +33,10 @@ export async function loadWasmModule<T = Record<string, unknown>>(
 ) {
     const module = await getWasmModule(path);
     return loader.instantiateSync(module, imports).exports as loader.ASUtil & T;
+}
+
+function patchIdof() {
+    const idof = () => {};
+    //@ts-ignore
+    globalThis.idof = idof;
 }
