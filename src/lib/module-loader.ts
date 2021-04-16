@@ -1,12 +1,13 @@
 import loader, { Imports } from '@assemblyscript/loader';
 
-async function getPathRelativeToTheRunningScript(relativePath: string) {
+export async function getPathRelativeToTheRunningScript(relativePath: string) {
     const path = await import('path');
     const callerFunction = require?.main?.filename ?? module.parent?.filename ?? __filename;
+
     return path.format({
         root: '/',
         dir: path.dirname(callerFunction),
-        base: relativePath.replace('./', '/'),
+        base: path.normalize(relativePath),
     });
 }
 async function getWasmModule(pathToModule: string): Promise<any> {
