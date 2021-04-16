@@ -20,10 +20,10 @@
             "exportRuntime": true
         },
 
-        "fractal": {
-            "binaryFile": "wasm/fractal/optimized.wasm",
-            "textFile": "wasm/fractal/optimized.wat",
-            "tsdFile": "wasm/fractal/types.d.ts",
+        "quicksort": {
+            "binaryFile": "wasm/quicksort/optimized.wasm",
+            "textFile": "wasm/quicksort/optimized.wat",
+            "tsdFile": "wasm/quicksort/types.d.ts",
             "sourceMap": false,
             "optimizeLevel": 3,
             "shrinkLevel": 1,
@@ -32,10 +32,10 @@
             "exportRuntime": true
         },
 
-        "quicksort": {
-            "binaryFile": "wasm/quicksort/optimized.wasm",
-            "textFile": "wasm/quicksort/optimized.wat",
-            "tsdFile": "wasm/quicksort/types.d.ts",
+        "array-generator": {
+            "binaryFile": "wasm/array-generator/optimized.wasm",
+            "textFile": "wasm/array-generator/optimized.wat",
+            "tsdFile": "wasm/array-generator/types.d.ts",
             "sourceMap": false,
             "optimizeLevel": 3,
             "shrinkLevel": 1,

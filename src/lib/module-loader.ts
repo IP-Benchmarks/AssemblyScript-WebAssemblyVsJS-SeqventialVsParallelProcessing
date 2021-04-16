@@ -18,7 +18,7 @@ async function getWasmModule(pathToModule: string): Promise<any> {
 }
 
 export async function loadJsModule<T = Record<string, unknown>>(pathToModule: string) {
-    patchIdof();
+    patch();
     if (!!require) {
         return require(await getPathRelativeToTheRunningScript(pathToModule)) as loader.ASUtil & T;
     }
@@ -35,8 +35,15 @@ export async function loadWasmModule<T = Record<string, unknown>>(
     return loader.instantiateSync(module, imports).exports as loader.ASUtil & T;
 }
 
-function patchIdof() {
-    const idof = () => {};
+function patch() {
     //@ts-ignore
-    globalThis.idof = idof;
+    globalThis.idof = () => {};
+    //@ts-ignore
+    globalThis.i32 = (x) => x;
+    //@ts-ignore
+    globalThis.unchecked = (x) => x;
+    //@ts-ignore
+    globalThis.i32.MIN_VALUE = Number.MIN_SAFE_INTEGER;
+    //@ts-ignore
+    globalThis.i32.MAX_VALUE = Number.MAX_SAFE_INTEGER;
 }

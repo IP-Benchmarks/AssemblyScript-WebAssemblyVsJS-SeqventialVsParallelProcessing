@@ -6,9 +6,8 @@
     "scripts": {
         "test": "node tests",
         "copy:wasm": "copyfiles ./wasm/* ./dist/",
-        "asbuild:fractal": "asc assembly/fractal.ts --target fractal  --use abort= && copyfiles ./wasm/fractal/* ./dist/ ",
         "asbuild:quicksort": "asc assembly/quicksort.ts --target quicksort --use abort= && copyfiles ./wasm/quicksort/* ./dist/ ",
-        "asbuild:optimized": "asc assembly/index.ts --target release --use abort= && copyfiles ./wasm/* ./dist/ ",
+        "asbuild:array-generator": "asc assembly/array-generator.ts --target array-generator --use abort= && copyfiles ./wasm/array-generator/* ./dist/ ",
         "asbuild:js": "tsc --project ./tsconfig.assembly.json && copyfiles ./wasm/js/* ./dist/ ",
         "build:tsc": "tsc",
         "build:asc": "npm-run-all --parallel asbuild:* && npm run copy:wasm",

@@ -1,7 +1,11 @@
+import { arrayGenerator, arrayGeneratorJs } from './src/array-generator';
 import { quickSort, quickSortJs } from './src/quicksort';
 
-function main() {
-    quickSort([2, 3, 5, 1, 6, 8, 88, 5, 23, 21, 5151]);
-    quickSortJs([2, 3, 5, 1, 6, 8, 88, 5, 23, 21, 5151]);
+async function main() {
+    const array = await arrayGenerator(100);
+    await arrayGeneratorJs(100);
+
+    await quickSort(array);
+    await quickSortJs(array);
 }
 main();
