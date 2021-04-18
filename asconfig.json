@@ -14,7 +14,7 @@
             "tsdFile": "wasm/types.d.ts",
             "sourceMap": false,
             "optimizeLevel": 3,
-            "shrinkLevel": 1,
+            "shrinkLevel": 0,
             "converge": false,
             "noAssert": true,
             "exportRuntime": true
@@ -26,7 +26,7 @@
             "tsdFile": "wasm/quicksort/types.d.ts",
             "sourceMap": false,
             "optimizeLevel": 3,
-            "shrinkLevel": 1,
+            "shrinkLevel": 0,
             "converge": false,
             "noAssert": true,
             "exportRuntime": true
@@ -38,7 +38,7 @@
             "tsdFile": "wasm/array-generator/types.d.ts",
             "sourceMap": false,
             "optimizeLevel": 3,
-            "shrinkLevel": 1,
+            "shrinkLevel": 0,
             "converge": false,
             "noAssert": true,
             "exportRuntime": true

@@ -28,3 +28,6 @@ Performance comparation of WebAssembly and Javascript in sequential and parallel
 | 10                | 0.335500002                               | 0.328400001                                 | 0.245900005                          | 0.044700004                            | 156.9811                                       | 119.2736                                         |
 | 5                 | 0.359700002                               | 0.236299999                                 | 0.216200002                          | 0.043599993                            | 165.3072                                       | 108.5005                                         |
 | 3                 | 0.341599993                               | 0.567100003                                 | 0.219300002                          | 0.045400001                            | 148.3428                                       | 115.4586                                         |
+
+Array generation time in js is invalid, needs to be updated
+after adding -O3 and shrink lvl 0 + unchecked on the array the speed increased so a new batch of data needs to be compiled.

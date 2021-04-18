@@ -3,9 +3,9 @@ import { quickSortJs, quickSortWasm } from './src/quicksort';
 import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithread.node';
 
 async function main() {
-    const maxInt32 = 10;
+    const maxInt32 = 20000000;
     console.log('Ammount of numbers:', maxInt32);
-    await arrayGeneratorJs(100);
+    await arrayGeneratorJs(maxInt32);
     const array = await arrayGeneratorWasm(maxInt32);
 
     await quickSortJs(array);

@@ -1,20 +1,20 @@
 function partition(array: i32[], left: i32 = 0, right: i32 = array.length - 1): i32 {
-    const pivot = array[Math.floor((right + left) / 2) as i32];
+    const pivot = unchecked(array[(right + left) >>> 1]); // compatible with both js and as; same as  same as array[Math.floor((right + left) / 2)]; in js or ame as array[(right + left) / 2] in as
     let i = left;
     let j = right;
 
     while (i <= j) {
-        while (array[i] < pivot) {
+        while (unchecked(array[i]) < pivot) {
             i++;
         }
 
-        while (array[j] > pivot) {
+        while (unchecked(array[j]) > pivot) {
             j--;
         }
 
         if (i <= j) {
-            const temp = array[j];
-            array[j] = array[i];
+            const temp = unchecked(array[j]);
+            array[j] = unchecked(array[i]);
             array[i] = temp;
             i++;
             j--;

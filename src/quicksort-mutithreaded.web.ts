@@ -39,7 +39,7 @@ export async function quickSortMultithreadedJs(array: number[]) {
     const jsModule = await loadJsModule<typeof QuickSortJs>('./wasm/js/quicksort.js');
 
     let timeNow = getTime();
-    console.log('values:', array.join(', '));
+    // console.log('values:', array.join(', '));
 
     const arr = [];
     const workerL = new Worker('./quicksort-multithread.webworker.ts');
