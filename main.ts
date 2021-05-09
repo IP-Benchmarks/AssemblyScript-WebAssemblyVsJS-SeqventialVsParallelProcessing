@@ -1,17 +1,31 @@
 import { arrayGeneratorJs, arrayGeneratorWasm } from './src/array-generator';
-import { quickSortJs, quickSortWasm } from './src/quicksort';
-import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithread.node';
+import { Metrics } from './src/lib/metrics';
+import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithreaded/nodeJs/quicksort-multithread.node';
+import { quickSortJs, quickSortWasm } from './src/quicksort/quicksort';
 
-async function main() {
-    const maxInt32 = 20000000;
-    console.log('Ammount of numbers:', maxInt32);
-    await arrayGeneratorJs(maxInt32);
-    const array = await arrayGeneratorWasm(maxInt32);
+async function runTest(arrLength: number, arrMin: number, arrMax: number) {
+    const metrics = new Metrics(arrLength);
 
-    await quickSortJs(array);
-    await quickSortWasm(array);
+    console.log('Ammount of numbers:', arrLength);
+    await arrayGeneratorJs(arrLength, arrMin, arrMax, metrics);
+    const array = await arrayGeneratorWasm(arrLength, arrMin, arrMax, metrics);
 
-    await quickSortMultithreadedJs(array);
-    await quickSortMultithreadedWasm(array);
+    const sortedArr = array.sort((a, b) => (a > b ? 1 : -1));
+
+    const quickSortJsArray = await quickSortJs(array);
+    const quickSortWasmArray = await quickSortWasm(array);
+    const quickSortMultithreadedJsArray = await quickSortMultithreadedJs(array, 3);
+    const quickSortMultithreadedWasmArray = await quickSortMultithreadedWasm(array, 3);
+
+    console.log('quickSortJsArray: ', testArray(sortedArr, quickSortJsArray));
+    console.log('quickSortWasmArray: ', testArray(sortedArr, quickSortWasmArray));
+    console.log('quickSortMultithreadedJsArray: ', testArray(sortedArr, quickSortMultithreadedJsArray), sortedArr, quickSortMultithreadedJsArray);
+    console.log('quickSortMultithreadedWasmArray: ', testArray(sortedArr, quickSortMultithreadedWasmArray), sortedArr, quickSortMultithreadedWasmArray);
+
+    return metrics;
 }
-main();
+function testArray(sorted: number[], checkArray: number[]) {
+    return JSON.stringify(sorted) == JSON.stringify(checkArray);
+}
+
+runTest(20, 0, 200);
