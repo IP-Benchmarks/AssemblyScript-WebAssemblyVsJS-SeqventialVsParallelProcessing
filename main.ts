@@ -1,7 +1,7 @@
 import { arrayGeneratorJs, arrayGeneratorWasm } from './src/array-generator';
 import { IMetrics } from './src/interfaces/metrics.interface';
 import { Metrics } from './src/lib/metrics';
-import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithreaded/nodeJs/quicksort-multithread.node';
+import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithreaded/quicksort-multithread';
 import { quickSortJs, quickSortWasm } from './src/quicksort/quicksort';
 
 let metricsTestsFailed = 0;
@@ -28,8 +28,8 @@ async function runSequential(array: number[], sortedArray: number[], metrics: IM
 }
 
 async function runMultithreaded(array: number[], sortedArray: number[], workers: number, metrics: IMetrics) {
-    testArray(sortedArray, await quickSortMultithreadedJs(array, workers), `quickSortMultithreadedJs - ${workers} - failed`);
-    testArray(sortedArray, await quickSortMultithreadedWasm(array, workers), `quickSortMultithreadedWasm - ${workers} - failed`);
+    testArray(sortedArray, await quickSortMultithreadedJs(array, workers, metrics), `quickSortMultithreadedJs - ${workers} - failed`);
+    testArray(sortedArray, await quickSortMultithreadedWasm(array, workers, metrics), `quickSortMultithreadedWasm - ${workers} - failed`);
 }
 
 function testArray(sorted: number[], checkArray: number[], message: string) {
@@ -40,33 +40,38 @@ function testArray(sorted: number[], checkArray: number[], message: string) {
 }
 
 function runAllMetrics() {
-    const arraySizes = [
-        20000000,
-        10000000,
-        5000000,
-        2500000,
-        1000000,
-        500000,
-        250000,
-        100000,
-        50000,
-        25000,
-        10000,
-        5000,
-        2500,
-        1000,
-        500,
-        250,
-        100,
-        50,
-        25,
-        10,
-        5,
-        3,
-    ];
+    // const arraySizes = [
+    //     20000000,
+    //     10000000,
+    //     5000000,
+    //     2500000,
+    //     1000000,
+    //     500000,
+    //     250000,
+    //     100000,
+    //     50000,
+    //     25000,
+    //     10000,
+    //     5000,
+    //     2500,
+    //     1000,
+    //     500,
+    //     250,
+    //     100,
+    //     50,
+    //     25,
+    //     10,
 
-    const workers = [1, 2, 5, 10, 50, 100, 1000];
-    arraySizes.forEach((size) => runMetrics(size, 0, 20000, workers));
+    //     5,
+    //     3,
+    // ];
+
+    // const workers = [1, 2, 5, 10, 50, 100, 1000];
+
+    const arraySizes = [50, 25, 10, 5, 3];
+
+    const workers = [1, 2, 5];
+    arraySizes.forEach(async (size) => await runMetrics(size, 0, 20000, workers));
     console.log('Tests failed:', metricsTestsFailed);
 }
 

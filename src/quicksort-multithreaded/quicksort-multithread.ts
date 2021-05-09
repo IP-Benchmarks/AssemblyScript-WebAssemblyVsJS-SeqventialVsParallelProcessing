@@ -1,32 +1,32 @@
-import { IMetrics, MetricsTypes } from 'src/interfaces/metrics.interface';
-import { Worker as NodeWorker } from 'worker_threads';
-
-import { getPathRelativeToTheRunningScript } from '../../lib/module-loader';
+import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
+import { getPathRelativeToTheRunningScript } from '../lib/module-loader';
+import { chunkArray } from '../lib/utils';
+import { getWorker } from '../lib/web-worker';
 
 export async function quickSortMultithreadedWasm(array: number[], workers: number, metrics: IMetrics) {
-    return await runWorker(array, workers, './src/quicksort-multithread.nodeworker-wasm.js', MetricsTypes.Wasm, metrics);
+    return await runWorker(array, workers, './src/quicksort-multithreaded/workers/quicksort-multithread.worker.wasm.js', MetricsTypes.Wasm, metrics);
 }
 
 export async function quickSortMultithreadedJs(array: number[], workers: number, metrics: IMetrics) {
-    return await runWorker(array, workers, './src/quicksort-multithread.nodeworker.js', MetricsTypes.Js, metrics);
+    return await runWorker(array, workers, './src/quicksort-multithreaded/workers/quicksort-multithread.worker.js', MetricsTypes.Js, metrics);
 }
 
 async function runWorker(array: number[], workers: number, importWorkerPath: string, type: MetricsTypes.Wasm | MetricsTypes.Js, metrics: IMetrics) {
     const importWorker = await getPathRelativeToTheRunningScript(importWorkerPath);
     const workerPromises: Promise<number[]>[] = [];
     const chunks = chunkArray(array, Math.ceil(array.length / workers));
-
+    const createWorkerType = getWorker();
     metrics.start();
     for (let i = 0; i <= workers - 1; i++) {
         workerPromises.push(
             new Promise<number[]>((resolve) => {
-                new NodeWorker(importWorker, {
-                    workerData: {
+                createWorkerType(
+                    importWorker,
+                    {
                         array: chunks[i],
                     },
-                }).on('message', (data) => {
-                    resolve(data);
-                });
+                    (data) => resolve(data)
+                );
             })
         );
     }

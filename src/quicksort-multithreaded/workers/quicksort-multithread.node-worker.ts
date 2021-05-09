@@ -7,6 +7,5 @@ loadJsModule<typeof QuickSortJs>('../wasm/js/quicksort.js').then((jsModule) => {
     const { array } = workerData;
 
     const sortedArr = jsModule.quickSort(array);
-    // console.log(array, sortedArr);
     parentPort?.postMessage(sortedArr);
 });
