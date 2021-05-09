@@ -1,31 +1,73 @@
 import { arrayGeneratorJs, arrayGeneratorWasm } from './src/array-generator';
+import { IMetrics } from './src/interfaces/metrics.interface';
 import { Metrics } from './src/lib/metrics';
 import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithreaded/nodeJs/quicksort-multithread.node';
 import { quickSortJs, quickSortWasm } from './src/quicksort/quicksort';
 
-async function runTest(arrLength: number, arrMin: number, arrMax: number) {
+let metricsTestsFailed = 0;
+
+async function runMetrics(arrLength: number, arrMin: number, arrMax: number, workerArray: number[]) {
     const metrics = new Metrics(arrLength);
 
-    console.log('Ammount of numbers:', arrLength);
     await arrayGeneratorJs(arrLength, arrMin, arrMax, metrics);
     const array = await arrayGeneratorWasm(arrLength, arrMin, arrMax, metrics);
+    const sortedArray = array.sort((a, b) => (a > b ? 1 : -1));
 
-    const sortedArr = array.sort((a, b) => (a > b ? 1 : -1));
+    await runSequential(array, sortedArray, metrics);
 
-    const quickSortJsArray = await quickSortJs(array);
-    const quickSortWasmArray = await quickSortWasm(array);
-    const quickSortMultithreadedJsArray = await quickSortMultithreadedJs(array, 3);
-    const quickSortMultithreadedWasmArray = await quickSortMultithreadedWasm(array, 3);
-
-    console.log('quickSortJsArray: ', testArray(sortedArr, quickSortJsArray));
-    console.log('quickSortWasmArray: ', testArray(sortedArr, quickSortWasmArray));
-    console.log('quickSortMultithreadedJsArray: ', testArray(sortedArr, quickSortMultithreadedJsArray), sortedArr, quickSortMultithreadedJsArray);
-    console.log('quickSortMultithreadedWasmArray: ', testArray(sortedArr, quickSortMultithreadedWasmArray), sortedArr, quickSortMultithreadedWasmArray);
+    workerArray.forEach(async (workerNumber) => {
+        await runMultithreaded(array, sortedArray, workerNumber, metrics);
+    });
 
     return metrics;
 }
-function testArray(sorted: number[], checkArray: number[]) {
-    return JSON.stringify(sorted) == JSON.stringify(checkArray);
+
+async function runSequential(array: number[], sortedArray: number[], metrics: IMetrics) {
+    testArray(sortedArray, await quickSortJs(array), 'quickSortJs failed');
+    testArray(sortedArray, await quickSortWasm(array), 'quickSortWasm failed');
 }
 
-runTest(20, 0, 200);
+async function runMultithreaded(array: number[], sortedArray: number[], workers: number, metrics: IMetrics) {
+    testArray(sortedArray, await quickSortMultithreadedJs(array, workers), `quickSortMultithreadedJs - ${workers} - failed`);
+    testArray(sortedArray, await quickSortMultithreadedWasm(array, workers), `quickSortMultithreadedWasm - ${workers} - failed`);
+}
+
+function testArray(sorted: number[], checkArray: number[], message: string) {
+    if (JSON.stringify(sorted) !== JSON.stringify(checkArray)) {
+        metricsTestsFailed++;
+        console.error(message);
+    }
+}
+
+function runAllMetrics() {
+    const arraySizes = [
+        20000000,
+        10000000,
+        5000000,
+        2500000,
+        1000000,
+        500000,
+        250000,
+        100000,
+        50000,
+        25000,
+        10000,
+        5000,
+        2500,
+        1000,
+        500,
+        250,
+        100,
+        50,
+        25,
+        10,
+        5,
+        3,
+    ];
+
+    const workers = [1, 2, 5, 10, 50, 100, 1000];
+    arraySizes.forEach((size) => runMetrics(size, 0, 20000, workers));
+    console.log('Tests failed:', metricsTestsFailed);
+}
+
+runAllMetrics();
