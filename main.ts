@@ -23,8 +23,8 @@ async function runMetrics(arrLength: number, arrMin: number, arrMax: number, wor
 }
 
 async function runSequential(array: number[], sortedArray: number[], metrics: IMetrics) {
-    testArray(sortedArray, await quickSortJs(array), 'quickSortJs failed');
-    testArray(sortedArray, await quickSortWasm(array), 'quickSortWasm failed');
+    testArray(sortedArray, await quickSortJs(array, metrics), 'quickSortJs failed');
+    testArray(sortedArray, await quickSortWasm(array, metrics), 'quickSortWasm failed');
 }
 
 async function runMultithreaded(array: number[], sortedArray: number[], workers: number, metrics: IMetrics) {

@@ -10,9 +10,9 @@ export interface IMetrics {
 export enum MetricsTypes {
     LoadTime = 'Load Time',
     ComputingTime = 'Computing Time',
-
     ArrayGeneration = 'Array generation',
-
+    QuickSort = 'QuickSort',
+    QuickSortMultithreaded = 'QuickSort Multithreaded',
     Wasm = 'WASM',
     Js = 'JavaScript',
 }
