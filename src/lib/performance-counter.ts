@@ -5,7 +5,3 @@ export function timer(): Performance {
     }
     return performance;
 }
-
-export function getTime() {
-    return timer().now();
-}

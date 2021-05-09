@@ -1,6 +1,6 @@
 # AssemblyScript-WebAssemblyVsJS-SeqventialVsParallelProcessing
 
-Performance comparation of WebAssembly and Javascript in sequential and parallel workloads in different available runtimes like Web, Node and Deno.
+Performance comparison of WebAssembly and Javascript in sequential and parallel workloads in different available runtimes like Web, Node and Deno.
 
 # Generated data
 
@@ -31,3 +31,7 @@ Performance comparation of WebAssembly and Javascript in sequential and parallel
 
 Array generation time in js is invalid, needs to be updated
 after adding -O3 and shrink lvl 0 + unchecked on the array the speed increased so a new batch of data needs to be compiled.
+
+# Constraints
+
+-   Loading the Wasm module needs to be done in all workers

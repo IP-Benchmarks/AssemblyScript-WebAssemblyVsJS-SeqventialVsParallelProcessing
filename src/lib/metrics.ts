@@ -1,5 +1,5 @@
 import { IMetrics } from './../interfaces/metrics.interface';
-import { getTime } from './performance-counter';
+import { timer } from './performance-counter';
 
 export class Metrics implements IMetrics {
     loadTime = new Map<string, number | string>();
@@ -8,9 +8,9 @@ export class Metrics implements IMetrics {
 
     constructor(public arrayLength: number) {}
     start() {
-        this.startTime = getTime();
+        this.startTime = timer().now();
     }
     stop() {
-        return (getTime() - (this.startTime ?? 0)).toFixed(3);
+        return (timer().now() - (this.startTime ?? 0)).toFixed(3);
     }
 }
