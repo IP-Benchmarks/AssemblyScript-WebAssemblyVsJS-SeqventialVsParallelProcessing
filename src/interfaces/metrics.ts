@@ -1,0 +1,1 @@
+export type IMetrics = Map<string, number>();
