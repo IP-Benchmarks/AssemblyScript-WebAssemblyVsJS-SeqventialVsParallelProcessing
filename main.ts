@@ -15,9 +15,9 @@ async function runMetrics(arrLength: number, arrMin: number, arrMax: number, wor
 
     await runSequential(array, sortedArray, metrics);
 
-    workerArray.forEach(async (workerNumber) => {
-        await runMultithreaded(array, sortedArray, workerNumber, metrics);
-    });
+    for (let i = 0; i < workerArray.length; i++) {
+        await runMultithreaded(array, sortedArray, workerArray[i], metrics);
+    }
 
     return metrics;
 }

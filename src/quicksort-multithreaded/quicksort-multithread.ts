@@ -32,6 +32,6 @@ async function runWorker(array: number[], workers: number, importWorkerPath: str
     }
 
     const results = await Promise.all(workerPromises);
-    metrics.loadTime.set(`${type} - ${MetricsTypes.QuickSortMultithreaded} ${MetricsTypes.ComputingTime}`, metrics.stop());
+    metrics.computingTime.set(`${MetricsTypes.QuickSortMultithreaded} - ${type}`, metrics.stop());
     return results.flat();
 }
