@@ -1,4 +1,4 @@
-import { loadJsModule } from '../../lib/module-loader';
+import { loadJsModule } from '@lib/module-loader';
 
 import type QuickSortJs from '../../../wasm/js/quicksort';
 onmessage = async ({ data }) => {

@@ -1,8 +1,8 @@
 import { arrayGeneratorJs, arrayGeneratorWasm } from './src/array-generator';
 import { IMetrics } from './src/interfaces/metrics.interface';
-import { Metrics } from './src/lib/metrics';
 import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './src/quicksort-multithreaded/quicksort-multithread';
 import { quickSortJs, quickSortWasm } from './src/quicksort/quicksort';
+import { Metrics } from './src/shared/metrics';
 
 let metricsTestsFailed = 0;
 
@@ -11,7 +11,7 @@ async function runMetrics(arrLength: number, arrMin: number, arrMax: number, wor
 
     await arrayGeneratorJs(arrLength, arrMin, arrMax, metrics);
     const array = await arrayGeneratorWasm(arrLength, arrMin, arrMax, metrics);
-    const sortedArray = array.sort((a, b) => (a > b ? 1 : -1));
+    const sortedArray = array.sort((a: number, b: number) => (a > b ? 1 : -1));
 
     await runSequential(array, sortedArray, metrics);
 

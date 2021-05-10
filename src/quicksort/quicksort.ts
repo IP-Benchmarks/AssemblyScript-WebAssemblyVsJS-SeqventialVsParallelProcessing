@@ -1,5 +1,6 @@
+import { loadJsModule, loadWasmModule } from '@lib/module-loader';
+
 import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
-import { loadJsModule, loadWasmModule } from '../lib/module-loader';
 
 import type QuickSort from '../../wasm/quicksort/types';
 import type QuickSortJs from '../../wasm/js/quicksort';

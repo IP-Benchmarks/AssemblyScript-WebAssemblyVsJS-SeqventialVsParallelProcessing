@@ -1,7 +1,8 @@
+import { getPathRelativeToTheRunningScript } from '@lib/module-loader';
+import { getWorker } from '@lib/web-worker';
+
 import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
-import { getPathRelativeToTheRunningScript } from '../lib/module-loader';
-import { chunkArray } from '../lib/utils';
-import { getWorker } from '../lib/web-worker';
+import { chunkArray } from '../shared/utils';
 
 export async function quickSortMultithreadedWasm(array: number[], workers: number, metrics: IMetrics) {
     return await runWorker(array, workers, './src/quicksort-multithreaded/workers/quicksort-multithread.worker.wasm.js', MetricsTypes.Wasm, metrics);

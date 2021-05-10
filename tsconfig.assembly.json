@@ -4,6 +4,7 @@
     "compilerOptions": {
         "outDir": "./wasm/js" /* Redirect output structure to the directory. */,
         "module": "umd",
-        "declaration": true
+        "declaration": true,
+        "target": "esnext"
     }
 }

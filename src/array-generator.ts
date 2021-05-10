@@ -1,5 +1,6 @@
+import { loadJsModule, loadWasmModule } from '@lib/module-loader';
+
 import { IMetrics, MetricsTypes } from './interfaces/metrics.interface';
-import { loadJsModule, loadWasmModule } from './lib/module-loader';
 
 import type ArrayGenerator from '../wasm/array-generator/types.d';
 import type ArrayGeneratorJs from '../wasm/js/array-generator.d';

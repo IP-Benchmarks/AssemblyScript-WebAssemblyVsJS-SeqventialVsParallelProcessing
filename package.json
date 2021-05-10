@@ -1,18 +1,20 @@
 {
     "name": "assemblyscript-webassemblyvsjs-seqventialvsparallelprocessing",
     "version": "1.0.0",
-    "description": "Performance comparation of WebAssembly and Javascript in sequential and parallel workloads in different available runtimes like Web, Node and Deno.",
+    "description": "Performance comparison of WebAssembly and Javascript in sequential and parallel workloads in different available runtimes like Web, Node and Deno.",
     "main": "index.js",
     "scripts": {
         "test": "node tests",
-        "copy:wasm": "copyfiles ./wasm/* ./dist/",
         "asbuild:quicksort": "asc assembly/quicksort.ts --target quicksort --use abort= && copyfiles ./wasm/quicksort/* ./dist/ ",
         "asbuild:array-generator": "asc assembly/array-generator.ts --target array-generator --use abort= && copyfiles ./wasm/array-generator/* ./dist/ ",
         "asbuild:js": "tsc --project ./tsconfig.assembly.json && copyfiles ./wasm/js/* ./dist/ ",
-        "build:tsc": "tsc",
-        "build:asc": "npm-run-all --parallel asbuild:* && npm run copy:wasm",
-        "build": "npm run build:asc && npm run build:tsc",
-        "start": "npm run build && node ./dist/main.js"
+        "build:asc": "npm-run-all --parallel asbuild:*",
+        "build:node": "tsc",
+        "start:node": "npm run build:node && node ./dist/main.js",
+        "build:all:node": "npm run build:asc && npm run build:node",
+        "start:all:node": "npm run build:all:node && node ./dist/main.js",
+        "build:web": "tsc --project ./tsconfig.web.json",
+        "webpack": "webpack"
     },
     "repository": {
         "type": "git",
@@ -25,13 +27,16 @@
     },
     "homepage": "https://github.com/IulianOctavianPreda/AssemblyScript-WebAssemblyVsJS-SeqventialVsParallelProcessing#readme",
     "dependencies": {
-        "@assemblyscript/loader": "^0.18.24",
-        "npm-run-all": "^4.1.5",
-        "typescript": "^4.2.4"
+        "@assemblyscript/loader": "^0.18.24"
     },
     "devDependencies": {
         "@types/node": "^14.14.37",
         "assemblyscript": "^0.18.24",
-        "copyfiles": "^2.4.1"
+        "copyfiles": "^2.4.1",
+        "npm-run-all": "^4.1.5",
+        "ts-loader": "^9.1.2",
+        "typescript": "^4.2.4",
+        "webpack": "^5.36.2",
+        "webpack-cli": "^4.7.0"
     }
 }
