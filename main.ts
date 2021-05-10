@@ -39,7 +39,8 @@ function testArray(sorted: number[], checkArray: number[], message: string) {
     }
 }
 
-function runAllMetrics() {
+async function runAllMetrics() {
+    const metrics = [];
     // const arraySizes = [
     //     20000000,
     //     10000000,
@@ -71,8 +72,11 @@ function runAllMetrics() {
     const arraySizes = [50, 25, 10, 5, 3];
 
     const workers = [1, 2, 5];
-    arraySizes.forEach(async (size) => await runMetrics(size, 0, 20000, workers));
+    for (let i = 0; i < arraySizes.length; i++) {
+        metrics.push(await runMetrics(arraySizes[i], 0, 20000, workers));
+    }
     console.log('Tests failed:', metricsTestsFailed);
+    console.log(metrics);
 }
 
 runAllMetrics();

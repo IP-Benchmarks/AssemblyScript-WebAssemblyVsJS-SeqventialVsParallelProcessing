@@ -17,7 +17,7 @@ async function runWorker(array: number[], workers: number, importWorkerPath: str
     const chunks = chunkArray(array, Math.ceil(array.length / workers));
     const createWorkerType = getWorker();
     metrics.start();
-    for (let i = 0; i <= workers - 1; i++) {
+    for (let i = 0; i < chunks.length; i++) {
         workerPromises.push(
             new Promise<number[]>((resolve) => {
                 createWorkerType(
