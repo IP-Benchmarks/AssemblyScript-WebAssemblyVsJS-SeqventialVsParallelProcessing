@@ -1,0 +1,10 @@
+{
+    "extends": "assemblyscript/std/assembly.json",
+    "compilerOptions": {
+        "outDir": "../../../wasm/js" /* Redirect output structure to the directory. */,
+        "module": "commonjs",
+        "declaration": true,
+        "target": "esnext"
+    },
+    "include": ["./*.ts"]
+}

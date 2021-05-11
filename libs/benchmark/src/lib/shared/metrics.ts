@@ -11,6 +11,6 @@ export class Metrics implements IMetrics {
         this.startTime = timer().now();
     }
     stop() {
-        return (timer().now() - (this.startTime ?? 0)).toFixed(3);
+        return (timer().now() - (this.startTime ? this.startTime : 0)).toFixed(3);
     }
 }

@@ -16,8 +16,7 @@
         "baseUrl": ".",
         "paths": {
             "@ip/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-            "@ip/benchmark": ["libs/benchmark/src/index.ts"],
-            "@ip/wasm": ["libs/wasm/index.ts"]
+            "@ip/benchmark": ["libs/benchmark/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

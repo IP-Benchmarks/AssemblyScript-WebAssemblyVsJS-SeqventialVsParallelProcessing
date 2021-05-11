@@ -78,5 +78,3 @@ export async function runAllMetrics() {
     console.log('Tests failed:', metricsTestsFailed);
     console.log(metrics);
 }
-
-runAllMetrics();

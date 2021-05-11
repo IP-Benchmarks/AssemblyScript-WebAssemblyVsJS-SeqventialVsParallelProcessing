@@ -2,7 +2,14 @@ import { ASUtil, Imports, instantiateSync } from '@assemblyscript/loader';
 
 export async function getPathRelativeToTheRunningScript(relativePath: string) {
     const path = await import('path');
-    const callerFunction = require?.main?.filename ?? module.parent?.filename ?? __filename;
+    let callerFunction = __filename;
+    if (require && require.main && require.main.filename) {
+        callerFunction = require.main.filename;
+    } else {
+        if (module.parent && module.parent.filename) {
+            callerFunction = module.parent.filename;
+        }
+    }
 
     return path.format({
         root: '/',
