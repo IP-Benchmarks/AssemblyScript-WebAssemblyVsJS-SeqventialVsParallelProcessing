@@ -1,4 +1,4 @@
-import loader, { Imports } from '@assemblyscript/loader';
+import { ASUtil, Imports, instantiateSync } from '@assemblyscript/loader';
 
 export async function getPathRelativeToTheRunningScript(relativePath: string) {
     const path = await import('path');
@@ -18,22 +18,22 @@ async function getWasmModule(pathToModule: string): Promise<any> {
     return fetch(pathToModule);
 }
 
-export async function loadJsModule<T = Record<string, unknown>>(pathToModule: string) {
+export async function loadJsModule<T>(pathToModule: string) {
     patch();
     if (require) {
-        return require(await getPathRelativeToTheRunningScript(pathToModule)) as loader.ASUtil & T;
+        return require(await getPathRelativeToTheRunningScript(pathToModule)) as T;
     }
-    return (await import(pathToModule)) as loader.ASUtil & T;
+    return (await import(pathToModule)) as T;
 }
 
-export async function loadWasmModule<T = Record<string, unknown>>(
+export async function loadWasmModule<T>(
     path: string,
     imports: Imports = {
         env: {},
     }
 ) {
     const module = await getWasmModule(path);
-    return loader.instantiateSync(module, imports).exports as loader.ASUtil & T;
+    return instantiateSync(module, imports).exports as ASUtil & T;
 }
 
 function patch() {

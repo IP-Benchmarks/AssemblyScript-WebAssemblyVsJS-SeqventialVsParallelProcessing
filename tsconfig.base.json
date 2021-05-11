@@ -17,7 +17,7 @@
         "paths": {
             "@ip/api-interfaces": ["libs/api-interfaces/src/index.ts"],
             "@ip/benchmark": ["libs/benchmark/src/index.ts"],
-            "@ip/wasm": ["libs/wasm/src/index.ts"]
+            "@ip/wasm": ["libs/wasm/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
