@@ -38,10 +38,11 @@ function readFile(basePath, filePath) {
             }
 
             data = `
+function idof(){return 0;};
+function i32(x){return x;};
+function unchecked(x){return x;};
 ${data}
-const idof = () => {};
-const i32 = (x) => x;
-const unchecked = (x) => x;
+
                 `;
 
             fs.writeFile(`${basePath}/${filePath}`, data, 'utf8', (err) => {
