@@ -12,7 +12,7 @@ loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm').t
 
     const sortedArr = __getArray(wasmModule.quickSort(arrayPtr));
 
-    parentPort?.postMessage(sortedArr);
+    parentPort.postMessage(sortedArr);
 
     __unpin(arrayPtr);
 });

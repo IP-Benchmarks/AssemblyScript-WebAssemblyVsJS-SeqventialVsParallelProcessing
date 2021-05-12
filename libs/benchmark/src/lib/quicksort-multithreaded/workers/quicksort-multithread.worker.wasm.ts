@@ -2,7 +2,7 @@ import { loadWasmModule } from '../../glue-code/module-loader';
 
 import type { QuickSortWasm } from '@ip/wasm-generated-js';
 
-onmessage = async ({ data }) => {
+globalThis.onmessage = async ({ data }) => {
     const wasmModule = await loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm');
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
     const { array } = data;
@@ -11,6 +11,6 @@ onmessage = async ({ data }) => {
 
     const sortedArr = __getArray(wasmModule.quickSort(arrayPtr));
 
-    postMessage(sortedArr);
+    globalThis.postMessage(sortedArr);
     __unpin(arrayPtr);
 };

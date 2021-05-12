@@ -26,7 +26,6 @@ async function getWasmModule(pathToModule: string): Promise<any> {
 }
 
 export function loadJsModule<T>(module: T) {
-    patch();
     return module;
 }
 
@@ -38,17 +37,4 @@ export async function loadWasmModule<T>(
 ) {
     const module = await getWasmModule(path);
     return instantiateSync(module, imports).exports as T & ASUtil;
-}
-
-function patch() {
-    //@ts-ignore
-    globalThis.idof = () => {};
-    //@ts-ignore
-    globalThis.i32 = (x) => x;
-    //@ts-ignore
-    globalThis.unchecked = (x) => x;
-    //@ts-ignore
-    globalThis.i32.MIN_VALUE = Number.MIN_SAFE_INTEGER;
-    //@ts-ignore
-    globalThis.i32.MAX_VALUE = Number.MAX_SAFE_INTEGER;
 }

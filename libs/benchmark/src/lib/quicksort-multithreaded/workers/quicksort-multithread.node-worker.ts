@@ -9,5 +9,5 @@ import('@ip/wasm-generated-js-import/quicksort.js').then((module) => {
     const { array } = workerData;
 
     const sortedArr = jsModule.quickSort(array);
-    parentPort?.postMessage(sortedArr);
+    parentPort.postMessage(sortedArr);
 });

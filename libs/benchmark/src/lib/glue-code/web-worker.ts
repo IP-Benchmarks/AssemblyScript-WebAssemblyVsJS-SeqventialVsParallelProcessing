@@ -1,6 +1,7 @@
 import { Worker as NodeWorker } from 'worker_threads';
 
 export function getWorker() {
+    console.log('hereeee!!!!!!!!!!!!!!', require);
     if (require) {
         return (pathToWorker: string, initialData: object, callback: (data: any) => void) => {
             const worker = new NodeWorker(pathToWorker.replace('.worker.', '.node-worker.'), {

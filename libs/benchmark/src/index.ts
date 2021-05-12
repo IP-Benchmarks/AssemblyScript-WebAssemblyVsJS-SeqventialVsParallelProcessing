@@ -8,3 +8,7 @@ export * from './lib/quicksort/quicksort';
 export * from './lib/quicksort-multithreaded/quicksort-multithread';
 export * from './lib/shared/metrics';
 export * from './lib/shared/utils';
+export * from './lib/quicksort-multithreaded/workers/quicksort-multithread.node-worker';
+export * from './lib/quicksort-multithreaded/workers/quicksort-multithread.node-worker.wasm';
+export * from './lib/quicksort-multithreaded/workers/quicksort-multithread.worker';
+export * from './lib/quicksort-multithreaded/workers/quicksort-multithread.worker.wasm';
