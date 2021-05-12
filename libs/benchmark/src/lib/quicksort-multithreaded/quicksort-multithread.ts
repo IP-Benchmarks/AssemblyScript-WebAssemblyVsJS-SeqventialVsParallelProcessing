@@ -3,11 +3,11 @@ import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
 import { chunkArray } from '../shared/utils';
 
 export async function quickSortMultithreadedWasm(array: number[], workers: number, metrics: IMetrics) {
-    return await runWorker(array, workers, './quicksort-multithread.worker.wasm.js', MetricsTypes.Wasm, metrics);
+    return await runWorker(array, workers, '@ip/benchmark/quicksort-multithreaded/workers/quicksort-multithread.worker.wasm.js', MetricsTypes.Wasm, metrics);
 }
 
 export async function quickSortMultithreadedJs(array: number[], workers: number, metrics: IMetrics) {
-    return await runWorker(array, workers, './quicksort-multithread.worker.js', MetricsTypes.Js, metrics);
+    return await runWorker(array, workers, '@ip/benchmark/quicksort-multithreaded/workers/quicksort-multithread.worker.js', MetricsTypes.Js, metrics);
 }
 
 async function runWorker(array: number[], workers: number, importWorker: string, type: MetricsTypes.Wasm | MetricsTypes.Js, metrics: IMetrics) {

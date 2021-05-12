@@ -25,12 +25,9 @@ async function getWasmModule(pathToModule: string): Promise<any> {
     return fetch(pathToModule);
 }
 
-export async function loadJsModule<T>(pathToModule: string) {
+export function loadJsModule<T>(module: T) {
     patch();
-    if (require) {
-        return require(await getPathRelativeToTheRunningScript(pathToModule)) as T;
-    }
-    return (await import(pathToModule)) as T;
+    return module;
 }
 
 export async function loadWasmModule<T>(
@@ -40,7 +37,7 @@ export async function loadWasmModule<T>(
     }
 ) {
     const module = await getWasmModule(path);
-    return instantiateSync(module, imports).exports as ASUtil & T;
+    return instantiateSync(module, imports).exports as T & ASUtil;
 }
 
 function patch() {

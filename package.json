@@ -31,9 +31,9 @@
         "workspace-generator": "nx workspace-generator",
         "dep-graph": "nx dep-graph",
         "help": "nx help",
-        "copy-wasm-js": "copyfiles ./wasm/js/**/* ./libs/wasm-generated-js/src/lib/ -u 2 && copyfiles ./wasm/**/*.d.ts ./libs/wasm-generated-js/src/lib/ -u 1 -e ./wasm/js/*",
+        "copy-wasm-types": "copyfiles ./wasm/**/*.d.ts ./libs/wasm-generated-js/src/lib/ -u 1 -e ./wasm/js/*",
         "copy-wasm:node": "copyfiles ./dist/wasm/**/*.wasm ./apps/node/assets/ -u 1",
-        "build:node": "npm run copy-wasm-js && npm run copy-wasm:node && ng build node ",
+        "build:node": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:node && ng build node ",
         "start:node": "npm run build:node && node ./dist/apps/node/main.js",
         "build:all:node": "npm run build:asc && npm run build:node",
         "start:all:node": "npm run build:all:node && node ./dist/apps/node/main.js"

@@ -2,9 +2,10 @@ import { loadJsModule, loadWasmModule } from './glue-code/module-loader';
 import { IMetrics, MetricsTypes } from './interfaces/metrics.interface';
 
 import type { ArrayGenerator } from '@ip/wasm-generated-js';
-import type ArrayGeneratorWasm from '../../../../wasm/array-generator/types.d';
+import type { ArrayGeneratorWasm } from '@ip/wasm-generated-js';
 export async function arrayGeneratorWasm(length: number, min: number, max: number, metrics: IMetrics) {
     metrics.start();
+    let a: typeof ArrayGeneratorWasm;
 
     const wasmModule = await loadWasmModule<typeof ArrayGeneratorWasm>('./assets/wasm/array-generator/optimized.wasm');
 
@@ -26,7 +27,7 @@ export async function arrayGeneratorWasm(length: number, min: number, max: numbe
 export async function arrayGeneratorJs(length: number, min: number, max: number, metrics: IMetrics) {
     metrics.start();
 
-    const jsModule = await loadJsModule<typeof ArrayGenerator>('./assets/wasm/js/array-generator.js');
+    const jsModule = loadJsModule<typeof ArrayGenerator>(await import('@ip/wasm-generated-js-import/array-generator.js'));
 
     metrics.loadTime.set(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Js}`, metrics.stop());
     metrics.start();

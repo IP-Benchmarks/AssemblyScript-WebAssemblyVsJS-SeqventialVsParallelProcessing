@@ -2,9 +2,9 @@ import { parentPort, workerData } from 'worker_threads';
 
 import { loadWasmModule } from '../../glue-code/module-loader';
 
-import type QuickSort from '../../../../../../wasm/quicksort/types';
+import type { QuickSortWasm } from '@ip/wasm-generated-js';
 
-loadWasmModule<typeof QuickSort>('./assets/wasm/quicksort/optimized.wasm').then((wasmModule) => {
+loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm').then((wasmModule) => {
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
     const { array } = workerData;
 

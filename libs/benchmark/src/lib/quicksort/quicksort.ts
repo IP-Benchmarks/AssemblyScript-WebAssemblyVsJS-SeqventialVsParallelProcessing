@@ -1,8 +1,8 @@
 import { loadJsModule, loadWasmModule } from '../glue-code/module-loader';
 import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
 
-import type * as QuickSort from '../../../../../wasm/js/quicksort.d';
-import type QuickSortWasm from '../../../../../wasm/quicksort/types';
+import type { QuickSort } from '@ip/wasm-generated-js';
+import type { QuickSortWasm } from '@ip/wasm-generated-js';
 export async function quickSortWasm(array: number[], metrics: IMetrics) {
     metrics.start();
 
@@ -25,7 +25,7 @@ export async function quickSortWasm(array: number[], metrics: IMetrics) {
 export async function quickSortJs(array: number[], metrics: IMetrics) {
     metrics.start();
 
-    const jsModule = await loadJsModule<typeof QuickSort>('./assets/wasm/js/quicksort.js');
+    const jsModule = loadJsModule<typeof QuickSort>(await import('@ip/wasm-generated-js-import/quicksort.js'));
 
     metrics.loadTime.set(`${MetricsTypes.QuickSort} - ${MetricsTypes.Js}`, metrics.stop());
     metrics.start();
