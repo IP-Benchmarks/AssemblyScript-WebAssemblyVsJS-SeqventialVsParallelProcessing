@@ -1,7 +1,7 @@
 import { loadJsModule, loadWasmModule } from './glue-code/module-loader';
 import { IMetrics, MetricsTypes } from './interfaces/metrics.interface';
 
-import type * as ArrayGenerator from '../../../../wasm/js/array-generator.d';
+import type { ArrayGenerator } from '@ip/wasm-generated-js';
 import type ArrayGeneratorWasm from '../../../../wasm/array-generator/types.d';
 export async function arrayGeneratorWasm(length: number, min: number, max: number, metrics: IMetrics) {
     metrics.start();

@@ -16,8 +16,11 @@
         "baseUrl": ".",
         "paths": {
             "@ip/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-            "@ip/benchmark": ["libs/benchmark/src/index.ts"]
-        }
+            "@ip/benchmark": ["libs/benchmark/src/index.ts"],
+            "@ip/wasm-generated-js": ["libs/wasm-generated-js/src/index.ts"]
+        },
+        "allowJs": true,
+        "checkJs": true
     },
     "exclude": ["node_modules", "tmp"]
 }

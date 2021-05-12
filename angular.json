@@ -259,6 +259,27 @@
                     }
                 }
             }
+        },
+        "wasm-generated-js": {
+            "root": "libs/wasm-generated-js",
+            "sourceRoot": "libs/wasm-generated-js/src",
+            "projectType": "library",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/wasm-generated-js/**/*.ts"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/wasm-generated-js"],
+                    "options": {
+                        "jestConfig": "libs/wasm-generated-js/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     }
 }

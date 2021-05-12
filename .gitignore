@@ -145,3 +145,4 @@ dist
 
 
 **/wasm/**/*
+**/wasm-generated-js/src/lib/*

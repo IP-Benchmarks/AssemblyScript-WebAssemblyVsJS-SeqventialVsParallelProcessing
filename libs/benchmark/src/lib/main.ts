@@ -9,8 +9,9 @@ let metricsTestsFailed = 0;
 async function runMetrics(arrLength: number, arrMin: number, arrMax: number, workerArray: number[]) {
     const metrics = new Metrics(arrLength);
 
-    await arrayGeneratorJs(arrLength, arrMin, arrMax, metrics);
     const array = await arrayGeneratorWasm(arrLength, arrMin, arrMax, metrics);
+    console.log(array);
+    await arrayGeneratorJs(arrLength, arrMin, arrMax, metrics);
     const sortedArray = array.sort((a: number, b: number) => (a > b ? 1 : -1));
 
     await runSequential(array, sortedArray, metrics);

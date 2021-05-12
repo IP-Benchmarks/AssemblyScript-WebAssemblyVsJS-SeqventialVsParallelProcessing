@@ -33,6 +33,9 @@
         },
         "node": {
             "tags": []
+        },
+        "wasm-generated-js": {
+            "tags": []
         }
     }
 }
