@@ -2,8 +2,8 @@ import { loadWasmModule } from '@ip/benchmark/glue/module-loader';
 
 import type { QuickSortWasm } from '@ip/wasm-generated-js';
 
+const wasmModule = await loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm');
 globalThis.onmessage = async ({ data }) => {
-    const wasmModule = await loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm');
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
     const { array } = data;
 

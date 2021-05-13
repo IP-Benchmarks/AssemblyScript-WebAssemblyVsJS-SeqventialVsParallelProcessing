@@ -1,4 +1,4 @@
-import { getWorker } from '@ip/benchmark/glue/worker';
+import { getWorker, reuseWorker } from '@ip/benchmark/glue/worker';
 
 import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
 import { chunkArray } from '../shared/utils';
@@ -11,15 +11,37 @@ export async function quickSortMultithreadedJs(array: number[], workers: number,
     return await runWorker(array, workers, 'js', MetricsTypes.Js, metrics);
 }
 
-async function runWorker(array: number[], workers: number, workerType: 'wasm' | 'js', type: MetricsTypes.Wasm | MetricsTypes.Js, metrics: IMetrics) {
-    const workerPromises: Promise<number[]>[] = [];
-    const chunks = chunkArray(array, Math.ceil(array.length / workers));
+async function runWorker(array: number[], workerNumber: number, workerType: 'wasm' | 'js', type: MetricsTypes.Wasm | MetricsTypes.Js, metrics: IMetrics) {
+    const chunks = chunkArray(array, Math.ceil(array.length / workerNumber));
     const createWorkerType = getWorker(workerType);
+    const workers: any[] = [];
+    let workerPromises: Promise<number[]>[] = [];
     metrics.start();
     for (let i = 0; i < chunks.length; i++) {
         workerPromises.push(
             new Promise<number[]>((resolve) => {
-                createWorkerType(
+                workers.push(
+                    createWorkerType(
+                        {
+                            array: chunks[i],
+                        },
+                        (data) => resolve(data)
+                    )
+                );
+            })
+        );
+    }
+
+    const results = await Promise.all(workerPromises);
+    metrics.computingTime.set(`${MetricsTypes.QuickSortMultithreaded} - ${type}`, metrics.stop());
+
+    workerPromises = [];
+    metrics.start();
+    for (let i = 0; i < chunks.length; i++) {
+        workerPromises.push(
+            new Promise<number[]>((resolve) => {
+                reuseWorker(
+                    workers[i],
                     {
                         array: chunks[i],
                     },
@@ -29,7 +51,9 @@ async function runWorker(array: number[], workers: number, workerType: 'wasm' | 
         );
     }
 
-    const results = await Promise.all(workerPromises);
-    metrics.computingTime.set(`${MetricsTypes.QuickSortMultithreaded} - ${type}`, metrics.stop());
+    const results2 = await Promise.all(workerPromises);
+    metrics.computingTime.set(`${MetricsTypes.QuickSortMultithreaded} - Workers Loaded - ${type}`, metrics.stop());
+
+    workers.forEach((worker) => worker.terminate());
     return results.flat();
 }
