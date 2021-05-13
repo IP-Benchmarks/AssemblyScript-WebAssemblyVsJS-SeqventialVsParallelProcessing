@@ -1,9 +1,10 @@
 import { ASUtil, Imports, instantiateSync } from '@assemblyscript/loader';
+import { readFileSync } from 'fs';
+import { dirname, format, normalize } from 'path';
 
-export async function getPathRelativeToTheRunningScript(relativePath: string) {
-    const path = await import('path');
+export function getPathRelativeToTheRunningScript(relativePath: string) {
     let callerFunction = __filename;
-    if (require && require.main && require.main.filename) {
+    if (require.main && require.main.filename) {
         callerFunction = require.main.filename;
     } else {
         if (module.parent && module.parent.filename) {
@@ -11,15 +12,14 @@ export async function getPathRelativeToTheRunningScript(relativePath: string) {
         }
     }
 
-    return path.format({
+    return format({
         root: '/',
-        dir: path.dirname(callerFunction),
-        base: path.normalize(relativePath),
+        dir: dirname(callerFunction),
+        base: normalize(relativePath),
     });
 }
-async function getWasmModule(pathToModule: string): Promise<any> {
-    const fs = await import('fs');
-    return fs.readFileSync(await getPathRelativeToTheRunningScript(pathToModule));
+function getWasmModule(pathToModule: string) {
+    return Promise.resolve(readFileSync(getPathRelativeToTheRunningScript(pathToModule)));
 }
 
 export function loadJsModule<T>(module: T) {

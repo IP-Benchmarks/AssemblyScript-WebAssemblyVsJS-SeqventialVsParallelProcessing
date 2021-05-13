@@ -1,8 +1,10 @@
 import { loadWasmModule } from '@ip/benchmark/glue/module-loader';
 import { parentPort, workerData } from 'worker_threads';
 
-import type { QuickSortWasm } from '@ip/wasm-generated-js';
+// needed as web workers have them and webpack assumes it is available to store the chunks to load in it
+const self = globalThis;
 
+import type { QuickSortWasm } from '@ip/wasm-generated-js';
 loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm').then((wasmModule) => {
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
     const { array } = workerData;

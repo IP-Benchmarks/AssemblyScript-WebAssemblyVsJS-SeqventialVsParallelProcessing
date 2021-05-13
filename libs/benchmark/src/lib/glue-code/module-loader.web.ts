@@ -1,6 +1,6 @@
 import { ASUtil, Imports, instantiateSync } from '@assemblyscript/loader';
 
-async function getWasmModule(pathToModule: string): Promise<any> {
+function getWasmModule(pathToModule: string): Promise<any> {
     return fetch(pathToModule);
 }
 
