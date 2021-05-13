@@ -1,0 +1,26 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "@ip/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+            "@ip/benchmark": ["libs/benchmark/src/index.ts"],
+            "@ip/benchmark/glue/*": ["libs/benchmark/src/lib/glue-code/*.web.ts"],
+            "@ip/wasm-generated-js": ["libs/wasm-generated-js/src/index.ts"],
+            "@ip/wasm-generated-js-import/*": ["libs/wasm-generated-js/src/lib/*"]
+        }
+    },
+    "files": [],
+    "include": [],
+    "references": [
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.spec.json"
+        }
+    ]
+}

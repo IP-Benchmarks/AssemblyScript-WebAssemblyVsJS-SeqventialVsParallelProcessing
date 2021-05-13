@@ -36,6 +36,9 @@
         },
         "wasm-generated-js": {
             "tags": []
+        },
+        "react": {
+            "tags": []
         }
     }
 }

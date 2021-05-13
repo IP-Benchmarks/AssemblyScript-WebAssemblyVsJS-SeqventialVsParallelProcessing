@@ -1,7 +1,8 @@
-import { ASUtil, Imports, instantiateSync } from '@assemblyscript/loader';
+import { ASUtil, Imports, instantiate } from '@assemblyscript/loader';
 
-function getWasmModule(pathToModule: string): Promise<any> {
-    return fetch(pathToModule);
+async function getWasmModule(pathToModule: string): Promise<any> {
+    const response = await fetch(pathToModule);
+    return await response.arrayBuffer();
 }
 
 export function loadJsModule<T>(module: T) {
@@ -15,5 +16,5 @@ export async function loadWasmModule<T>(
     }
 ) {
     const module = await getWasmModule(path);
-    return instantiateSync(module, imports).exports as T & ASUtil;
+    return (await instantiate(module, imports)).exports as T & ASUtil;
 }
