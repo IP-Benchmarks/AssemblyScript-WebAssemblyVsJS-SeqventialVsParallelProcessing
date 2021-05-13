@@ -76,7 +76,7 @@ export async function runAllMetrics() {
     for (let i = 0; i < arraySizes.length; i++) {
         metrics.push(await runMetrics(arraySizes[i], 0, 20000, workers));
     }
-    console.log('Tests failed:', metricsTestsFailed);
+    // console.log('Tests failed:', metricsTestsFailed);
     console.log(metrics);
     return metrics;
 }

@@ -1,5 +1,5 @@
 import { IMetrics, runAllMetrics } from '@ip/benchmark';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 import { AppService } from './app.service';
 
@@ -17,9 +17,9 @@ export class AppController {
         return await runAllMetrics();
     }
 
-    @Post('metrics')
-    postMetrics(@Body() metrics: { metrics: IMetrics[] }) {
-        console.log(metrics);
-        return metrics;
-    }
+    // @Post('metrics')
+    // postMetrics(@Body() metrics: { metrics: IMetrics[] }) {
+    //     console.log(metrics.metrics);
+    //     return metrics;
+    // }
 }
