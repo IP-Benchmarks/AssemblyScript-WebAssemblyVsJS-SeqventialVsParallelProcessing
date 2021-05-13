@@ -18,11 +18,8 @@ export async function getPathRelativeToTheRunningScript(relativePath: string) {
     });
 }
 async function getWasmModule(pathToModule: string): Promise<any> {
-    if (require) {
-        const fs = await import('fs');
-        return fs.readFileSync(await getPathRelativeToTheRunningScript(pathToModule));
-    }
-    return fetch(pathToModule);
+    const fs = await import('fs');
+    return fs.readFileSync(await getPathRelativeToTheRunningScript(pathToModule));
 }
 
 export function loadJsModule<T>(module: T) {

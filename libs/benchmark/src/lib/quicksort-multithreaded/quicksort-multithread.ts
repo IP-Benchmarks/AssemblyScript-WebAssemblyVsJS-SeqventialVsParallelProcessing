@@ -1,37 +1,25 @@
-import { getWorker } from '../glue-code/web-worker';
+import { getWorker } from '@ip/benchmark/glue/worker';
+
 import { IMetrics, MetricsTypes } from '../interfaces/metrics.interface';
 import { chunkArray } from '../shared/utils';
 
 export async function quickSortMultithreadedWasm(array: number[], workers: number, metrics: IMetrics) {
-    return await runWorker(
-        array,
-        workers,
-        './libs/benchmark/src/lib/quicksort-multithreaded/workers/quicksort-multithread.worker.wasm.js',
-        MetricsTypes.Wasm,
-        metrics
-    );
+    return await runWorker(array, workers, 'wasm', MetricsTypes.Wasm, metrics);
 }
 
 export async function quickSortMultithreadedJs(array: number[], workers: number, metrics: IMetrics) {
-    return await runWorker(
-        array,
-        workers,
-        './libs/benchmark/src/lib/quicksort-multithreaded/workers/quicksort-multithread.worker.js',
-        MetricsTypes.Js,
-        metrics
-    );
+    return await runWorker(array, workers, 'js', MetricsTypes.Js, metrics);
 }
 
-async function runWorker(array: number[], workers: number, importWorker: string, type: MetricsTypes.Wasm | MetricsTypes.Js, metrics: IMetrics) {
+async function runWorker(array: number[], workers: number, workerType: 'wasm' | 'js', type: MetricsTypes.Wasm | MetricsTypes.Js, metrics: IMetrics) {
     const workerPromises: Promise<number[]>[] = [];
     const chunks = chunkArray(array, Math.ceil(array.length / workers));
-    const createWorkerType = getWorker();
+    const createWorkerType = getWorker(workerType);
     metrics.start();
     for (let i = 0; i < chunks.length; i++) {
         workerPromises.push(
             new Promise<number[]>((resolve) => {
                 createWorkerType(
-                    importWorker,
                     {
                         array: chunks[i],
                     },

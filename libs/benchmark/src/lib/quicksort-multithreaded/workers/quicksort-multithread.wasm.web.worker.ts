@@ -1,4 +1,4 @@
-import { loadWasmModule } from '../../glue-code/module-loader';
+import { loadWasmModule } from '@ip/benchmark/glue/module-loader';
 
 import type { QuickSortWasm } from '@ip/wasm-generated-js';
 

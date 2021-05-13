@@ -1,6 +1,5 @@
+import { loadWasmModule } from '@ip/benchmark/glue/module-loader';
 import { parentPort, workerData } from 'worker_threads';
-
-import { loadWasmModule } from '../../glue-code/module-loader';
 
 import type { QuickSortWasm } from '@ip/wasm-generated-js';
 

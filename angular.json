@@ -222,7 +222,8 @@
                         "outputPath": "dist/apps/node",
                         "main": "apps/node/src/main.ts",
                         "tsConfig": "apps/node/tsconfig.app.json",
-                        "assets": ["apps/node/src/assets"]
+                        "assets": ["apps/node/src/assets"],
+                        "webpackConfig": "apps/node/webpack.custom.js"
                     },
                     "configurations": {
                         "production": {

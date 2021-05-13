@@ -1,4 +1,5 @@
-import { loadJsModule, loadWasmModule } from './glue-code/module-loader';
+import { loadJsModule, loadWasmModule } from '@ip/benchmark/glue/module-loader';
+
 import { IMetrics, MetricsTypes } from './interfaces/metrics.interface';
 
 import type { ArrayGenerator } from '@ip/wasm-generated-js';

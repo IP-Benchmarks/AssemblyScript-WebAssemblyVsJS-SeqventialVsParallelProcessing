@@ -1,4 +1,5 @@
-import { timer } from '../glue-code/performance-counter';
+import { timer } from '@ip/benchmark/glue/performance-counter';
+
 import { IMetrics } from './../interfaces/metrics.interface';
 
 export class Metrics implements IMetrics {
