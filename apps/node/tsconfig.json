@@ -3,6 +3,8 @@
     "files": [],
     "include": [],
     "compilerOptions": {
+        "lib": ["ESNext"],
+
         "paths": {
             "@ip/api-interfaces": ["libs/api-interfaces/src/index.ts"],
             "@ip/benchmark": ["libs/benchmark/src/index.ts"],

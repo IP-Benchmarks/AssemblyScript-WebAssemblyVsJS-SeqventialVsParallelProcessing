@@ -23,7 +23,8 @@
         },
         "allowJs": true,
         "checkJs": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
     },
     "exclude": ["node_modules", "tmp"]
 }

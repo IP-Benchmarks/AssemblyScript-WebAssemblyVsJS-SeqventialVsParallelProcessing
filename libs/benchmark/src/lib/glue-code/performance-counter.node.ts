@@ -1,4 +1,5 @@
+import { Performance, performance } from 'perf_hooks';
+
 export function timer(): Performance {
-    const { performance } = require('perf_hooks');
     return performance;
 }
