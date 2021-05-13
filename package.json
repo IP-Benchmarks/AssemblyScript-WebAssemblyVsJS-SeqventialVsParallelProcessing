@@ -43,7 +43,13 @@
         "build:react:watch": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:react && ng build react --watch",
         "start:react": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:react && ng serve react",
         "build:all:react": "npm run build:asc && npm run build:react",
-        "start:all:react": "npm run build:asc && npm run serve:react"
+        "start:all:react": "npm run build:asc && npm run serve:react",
+        "copy-wasm:api": "copyfiles ./wasm/**/*.wasm ./apps/api/src/assets/ ",
+        "build:api": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:api && ng build api ",
+        "build:api:watch": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:api && ng build api --watch",
+        "start:api": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:api && ng serve api",
+        "build:all:api": "npm run build:asc && npm run build:api",
+        "start:all:api": "npm run build:asc && npm run serve:api"
     },
     "repository": {
         "type": "git",

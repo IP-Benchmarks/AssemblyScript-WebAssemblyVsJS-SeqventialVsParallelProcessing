@@ -6,7 +6,6 @@
         "lib": ["ESNext"],
 
         "paths": {
-            "@ip/api-interfaces": ["libs/api-interfaces/src/index.ts"],
             "@ip/benchmark": ["libs/benchmark/src/index.ts"],
             "@ip/benchmark/glue/*": ["libs/benchmark/src/lib/glue-code/*.node.ts"],
             "@ip/wasm-generated-js": ["libs/wasm-generated-js/src/index.ts"],

@@ -41,7 +41,7 @@ function testArray(sorted: number[], checkArray: number[], message: string) {
 }
 
 export async function runAllMetrics() {
-    const metrics = [];
+    const metrics: IMetrics[] = [];
     // const arraySizes = [
     //     20000000,
     //     10000000,
@@ -78,4 +78,5 @@ export async function runAllMetrics() {
     }
     console.log('Tests failed:', metricsTestsFailed);
     console.log(metrics);
+    return metrics;
 }
