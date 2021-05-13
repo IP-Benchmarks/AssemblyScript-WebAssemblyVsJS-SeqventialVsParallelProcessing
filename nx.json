@@ -22,9 +22,6 @@
         "api": {
             "tags": []
         },
-        "api-interfaces": {
-            "tags": []
-        },
         "benchmark": {
             "tags": []
         },
