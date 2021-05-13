@@ -19,9 +19,6 @@
         }
     },
     "projects": {
-        "frontend": {
-            "tags": []
-        },
         "api": {
             "tags": []
         },

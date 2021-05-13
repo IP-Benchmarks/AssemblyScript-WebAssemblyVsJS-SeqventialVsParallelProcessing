@@ -3,7 +3,6 @@
     "cli": {
         "defaultCollection": "@nrwl/angular"
     },
-    "defaultProject": "frontend",
     "schematics": {
         "@nrwl/angular": {
             "application": {
@@ -46,89 +45,6 @@
         }
     },
     "projects": {
-        "frontend": {
-            "projectType": "application",
-            "root": "apps/frontend",
-            "sourceRoot": "apps/frontend/src",
-            "prefix": "ip",
-            "architect": {
-                "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
-                    "options": {
-                        "outputPath": "dist/apps/frontend",
-                        "index": "apps/frontend/src/index.html",
-                        "main": "apps/frontend/src/main.ts",
-                        "polyfills": "apps/frontend/src/polyfills.ts",
-                        "tsConfig": "apps/frontend/tsconfig.app.json",
-                        "aot": true,
-                        "assets": ["apps/frontend/src/favicon.ico", "apps/frontend/src/assets"],
-                        "styles": ["apps/frontend/src/styles.scss"],
-                        "scripts": []
-                    },
-                    "configurations": {
-                        "production": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "apps/frontend/src/environments/environment.ts",
-                                    "with": "apps/frontend/src/environments/environment.prod.ts"
-                                }
-                            ],
-                            "optimization": true,
-                            "outputHashing": "all",
-                            "sourceMap": false,
-                            "namedChunks": false,
-                            "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "2mb",
-                                    "maximumError": "5mb"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
-                    "options": {
-                        "browserTarget": "frontend:build",
-                        "proxyConfig": "apps/frontend/proxy.conf.json"
-                    },
-                    "configurations": {
-                        "production": {
-                            "browserTarget": "frontend:build:production"
-                        }
-                    }
-                },
-                "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
-                    "options": {
-                        "browserTarget": "frontend:build"
-                    }
-                },
-                "lint": {
-                    "builder": "@nrwl/linter:eslint",
-                    "options": {
-                        "lintFilePatterns": ["apps/frontend/src/**/*.ts", "apps/frontend/src/**/*.html"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/apps/frontend"],
-                    "options": {
-                        "jestConfig": "apps/frontend/jest.config.js",
-                        "passWithNoTests": true
-                    }
-                }
-            }
-        },
         "api": {
             "root": "apps/api",
             "sourceRoot": "apps\\api\\src",
