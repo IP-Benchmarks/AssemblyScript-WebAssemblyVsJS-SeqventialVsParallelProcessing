@@ -8,6 +8,7 @@
         "asbuild:array-generator": "asc ./assembly/array-generator.ts --target array-generator --use abort=",
         "asbuild:js": "tsc --project ./assembly/tsconfig.json && node ./patch-assemblyscript-js-files.js",
         "build:asc": "npm-run-all --parallel asbuild:*",
+        "copy-wasm-types": "copyfiles ./wasm/**/*.d.ts ./libs/wasm-generated-js/src/lib/ -u 1 -e ./wasm/js/*",
         "ng": "nx",
         "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
         "nx": "nx",
@@ -31,12 +32,18 @@
         "workspace-generator": "nx workspace-generator",
         "dep-graph": "nx dep-graph",
         "help": "nx help",
-        "copy-wasm-types": "copyfiles ./wasm/**/*.d.ts ./libs/wasm-generated-js/src/lib/ -u 1 -e ./wasm/js/*",
         "copy-wasm:node": "copyfiles ./wasm/**/*.wasm ./apps/node/src/assets/ ",
         "build:node": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:node && ng build node ",
+        "build:node:watch": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:node && ng build node --watch",
         "start:node": "npm run build:node && node ./dist/apps/node/main.js",
         "build:all:node": "npm run build:asc && npm run build:node",
-        "start:all:node": "npm run build:all:node && node ./dist/apps/node/main.js"
+        "start:all:node": "npm run build:all:node && node ./dist/apps/node/main.js",
+        "copy-wasm:frontend": "copyfiles ./wasm/**/*.wasm ./apps/frontend/src/assets/ ",
+        "build:frontend": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:frontend && ng build frontend ",
+        "build:frontend:watch": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:frontend && ng build frontend --watch",
+        "start:frontend": "npm run asbuild:js && npm run copy-wasm-types && npm run copy-wasm:frontend && ng serve frontend",
+        "build:all:frontend": "npm run build:asc && npm run build:frontend",
+        "start:all:frontend": "npm run build:asc && npm run serve:frontend"
     },
     "repository": {
         "type": "git",
