@@ -3,6 +3,7 @@ import { IMetrics } from './interfaces/metrics.interface';
 import { quickSortMultithreadedJs, quickSortMultithreadedWasm } from './quicksort-multithreaded/quicksort-multithread';
 import { quickSortJs, quickSortWasm } from './quicksort/quicksort';
 import { Metrics } from './shared/metrics';
+import { testArray } from './shared/utils';
 
 let metricsTestsFailed = 0;
 
@@ -24,20 +25,23 @@ async function runMetrics(arrLength: number, arrMin: number, arrMax: number, wor
 }
 
 async function runSequential(array: number[], sortedArray: number[], metrics: IMetrics) {
-    testArray(sortedArray, await quickSortJs(array, metrics), 'quickSortJs failed');
-    testArray(sortedArray, await quickSortWasm(array, metrics), 'quickSortWasm failed');
+    testArray(sortedArray, await quickSortJs(array, metrics), 'quickSortJs failed', () => metricsTestsFailed++);
+    testArray(sortedArray, await quickSortWasm(array, metrics), 'quickSortWasm failed', () => metricsTestsFailed++);
 }
 
 async function runMultithreaded(array: number[], sortedArray: number[], workers: number, metrics: IMetrics) {
-    testArray(sortedArray, await quickSortMultithreadedJs(array, workers, metrics), `quickSortMultithreadedJs - ${workers} - failed`);
-    testArray(sortedArray, await quickSortMultithreadedWasm(array, workers, metrics), `quickSortMultithreadedWasm - ${workers} - failed`);
-}
-
-function testArray(sorted: number[], checkArray: number[], message: string) {
-    if (JSON.stringify(sorted) !== JSON.stringify(checkArray)) {
-        metricsTestsFailed++;
-        console.error(message);
-    }
+    testArray(
+        sortedArray,
+        await quickSortMultithreadedJs(array, workers, metrics),
+        `quickSortMultithreadedJs - ${workers} - failed`,
+        () => metricsTestsFailed++
+    );
+    testArray(
+        sortedArray,
+        await quickSortMultithreadedWasm(array, workers, metrics),
+        `quickSortMultithreadedWasm - ${workers} - failed`,
+        () => metricsTestsFailed++
+    );
 }
 
 export async function runAllMetrics() {

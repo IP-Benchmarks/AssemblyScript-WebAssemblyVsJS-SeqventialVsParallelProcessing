@@ -19,3 +19,10 @@ export function getWorker(type: 'wasm' | 'js') {
         return worker.on('message', (data) => callback(data));
     };
 }
+
+export function reuseWorker(worker: Worker, data: any, callback: (data: any) => void) {
+    // worker.postMessage(data);
+    // worker.onmessage = ({ data }) => {
+    //     callback(data);
+    // };
+}
