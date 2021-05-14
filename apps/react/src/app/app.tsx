@@ -1,5 +1,4 @@
-import { metricsToMarkdownTable, runAllMetrics } from '@ip/benchmark';
-import marked from 'marked';
+import { IMetrics, runAllMetrics } from '@ip/benchmark';
 import React, { useState } from 'react';
 
 import { getData } from './shared/api';
@@ -12,21 +11,58 @@ export function App() {
     //     });
     // });
 
-    const [webMarkdown, setWebMarkdown] = useState<string>();
-    const [serverMarkdown, setServerMarkdown] = useState<string>();
+    function metricsToTable(metrics: IMetrics[]) {
+        function createHeader(metric: IMetrics) {
+            const loadTime = Array.from(metric.loadTime.keys()).map((x) => <th key={x}>{x}</th>);
+            const computingTime = Array.from(metric.computingTime.keys()).map((x) => <th key={x}>{x}</th>);
+
+            return (
+                <tr>
+                    <th key={'Amount of numbers'}>Amount of numbers</th>
+                    {loadTime}
+                    {computingTime}
+                </tr>
+            );
+        }
+
+        function createBody(metrics: IMetrics[]) {
+            const loadTime = (metric: IMetrics, index: number) =>
+                Array.from(metric.loadTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
+            const computingTime = (metric: IMetrics, index: number) =>
+                Array.from(metric.computingTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
+
+            return metrics.map((metric, index) => (
+                <tr>
+                    <td key={'Amount of numbers' + index}>{metric.arrayLength}</td>
+                    {loadTime(metric, index)}
+                    {computingTime(metric, index)}
+                </tr>
+            ));
+        }
+        if (metrics.length === 0) return <table></table>;
+        return (
+            <table>
+                <thead>{createHeader(metrics[0])}</thead>
+                <tbody>{createBody(metrics)}</tbody>
+            </table>
+        );
+    }
+
+    const [webMetrics, setWebMetrics] = useState<any[]>();
+    const [serverMetrics, setServerMetrics] = useState<any[]>();
 
     return (
         <div>
             <div className="button-wrapper">
-                <button className="button" onClick={async () => setWebMarkdown(metricsToMarkdownTable(await runAllMetrics()))}>
+                <button className="button" onClick={async () => setWebMetrics(await runAllMetrics())}>
                     Run All Metrics in Web
                 </button>
-                <button className="button" onClick={async () => setServerMarkdown(await getData('/metrics'))}>
+                <button className="button" onClick={async () => setServerMetrics(await getData('/metrics'))}>
                     Run All Metrics on Server
                 </button>
             </div>
-            <div dangerouslySetInnerHTML={{ __html: webMarkdown ? marked(webMarkdown) : '' }}></div>
-            <div dangerouslySetInnerHTML={{ __html: serverMarkdown ? marked(serverMarkdown) : '' }}></div>
+            <div>{webMetrics ? metricsToTable(webMetrics) : null}</div>
+            <div>{serverMetrics ? metricsToTable(serverMetrics) : null}</div>
         </div>
     );
 }
