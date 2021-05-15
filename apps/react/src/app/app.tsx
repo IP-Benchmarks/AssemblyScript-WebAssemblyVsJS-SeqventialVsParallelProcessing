@@ -13,41 +13,67 @@ export function App() {
     // });
 
     function metricsToTable(metrics: IMetrics[]) {
-        function createHeader(metric: IMetrics) {
+        const createHeaderLoadTime = (metric: IMetrics) => {
             const loadTime = Array.from(metric.loadTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
-            const computingTime = Array.from(metric.computingTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
 
             return (
                 <tr>
                     <th key={'Amount of numbers'}>Amount of numbers</th>
                     {loadTime}
+                </tr>
+            );
+        };
+
+        const createHeaderComputingTime = (metric: IMetrics) => {
+            const computingTime = Array.from(metric.computingTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
+
+            return (
+                <tr>
+                    <th key={'Amount of numbers'}>Amount of numbers</th>
                     {computingTime}
                 </tr>
             );
-        }
-
-        function createBody(metrics: IMetrics[]) {
+        };
+        const createBodyLoadTime = (metrics: IMetrics[]) => {
             const loadTime = (metric: IMetrics, index: number) =>
                 Array.from(metric.loadTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
+
+            return metrics.map((metric, index) => (
+                <tr key={index} className={index === 0 ? 'red' : ''} data-tip={index === 0 ? 'Before JIT' : 'After JIT'}>
+                    <td key={'Amount of numbers' + index}>{metric.arrayLength}</td>
+                    {loadTime(metric, index)}
+                </tr>
+            ));
+        };
+
+        const createBodyComputingTime = (metrics: IMetrics[]) => {
             const computingTime = (metric: IMetrics, index: number) =>
                 Array.from(metric.computingTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
 
             return metrics.map((metric, index) => (
                 <tr key={index} className={index === 0 ? 'red' : ''} data-tip={index === 0 ? 'Before JIT' : 'After JIT'}>
                     <td key={'Amount of numbers' + index}>{metric.arrayLength}</td>
-                    {loadTime(metric, index)}
                     {computingTime(metric, index)}
                 </tr>
             ));
-        }
+        };
+
         if (metrics.length === 0) return <table></table>;
         return (
-            <table className="table">
+            <div>
                 <ReactTooltip />
+                <h1 className="heading">Loading Time</h1>
+                <table className="table">
+                    <thead>{createHeaderLoadTime(metrics[0])}</thead>
+                    <tbody>{createBodyLoadTime(metrics)}</tbody>
+                </table>
 
-                <thead>{createHeader(metrics[0])}</thead>
-                <tbody>{createBody(metrics)}</tbody>
-            </table>
+                <h1 className="heading">Computing Time</h1>
+                <table className="table">
+                    <thead>{createHeaderComputingTime(metrics[0])}</thead>
+                    <tbody>{createBodyComputingTime(metrics)}</tbody>
+                </table>
+            </div>
         );
     }
 
@@ -66,14 +92,14 @@ export function App() {
             </div>
 
             {webMetrics ? (
-                <div>
+                <div className="table-wrapper">
                     <h1 className="heading">Web Metrics</h1>
                     {metricsToTable(webMetrics)}
                 </div>
             ) : null}
 
             {serverMetrics ? (
-                <div>
+                <div className="table-wrapper">
                     <h1 className="heading">Server Metrics</h1>
                     {metricsToTable(serverMetrics)}
                 </div>
