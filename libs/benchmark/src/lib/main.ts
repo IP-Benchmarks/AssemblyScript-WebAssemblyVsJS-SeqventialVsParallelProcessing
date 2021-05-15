@@ -44,7 +44,7 @@ async function runMultithreaded(array: number[], sortedArray: number[], workers:
     );
 }
 
-export async function runAllMetrics() {
+export async function runAllMetrics(maxValue: number, step: number) {
     const metrics: IMetrics[] = [];
     // const arraySizes = [
     //     20000000,
@@ -71,16 +71,26 @@ export async function runAllMetrics() {
     //     5,
     //     3,
     // ];
+    console.log(maxValue, step);
+    const createArray = (maxValue: number, step: number) => {
+        const arr = [];
+        let currentNumber = step;
+        arr.push(currentNumber);
+        while (currentNumber < maxValue) {
+            arr.push(currentNumber);
+            currentNumber = currentNumber + step;
+        }
+        arr.push(maxValue);
 
-    // const workers = [1, 2, 5, 10, 50, 100, 1000];
-
-    const arraySizes = [50, 50, 25, 10, 5, 3];
+        return arr;
+    };
+    const arraySizes = createArray(maxValue, step);
 
     const workers = [1, 2, 5];
     for (let i = 0; i < arraySizes.length; i++) {
         metrics.push(await runMetrics(arraySizes[i], 0, 20000, workers));
     }
-    // console.log('Tests failed:', metricsTestsFailed);
-    console.log(metrics);
+    console.log('Tests failed:', metricsTestsFailed);
+    // console.log(metrics);
     return metrics;
 }

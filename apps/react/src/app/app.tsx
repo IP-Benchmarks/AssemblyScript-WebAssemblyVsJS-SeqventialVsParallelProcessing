@@ -78,10 +78,17 @@ export function App() {
     const [webMetrics, setWebMetrics] = useState<IMetrics[]>();
     const [serverMetrics, setServerMetrics] = useState<IMetrics[]>();
 
+    const [maxValue, setMaxValue] = useState<number>(50);
+    const [step, setStep] = useState<number>(2);
+
     return (
         <div>
             <div className="button-wrapper">
-                <a href="#" className="button" onClick={async () => setWebMetrics(await runAllMetrics())}>
+                <p>Max value:</p>
+                <input type="text" placeholder="Max value" onChange={(event) => setMaxValue(Number(event.target.value))} value={maxValue}></input>
+                <p>Step:</p>
+                <input type="text" placeholder="Step" onChange={(event) => setStep(Number(event.target.value))} value={step}></input>
+                <a href="#" className="button" onClick={async () => setWebMetrics(await runAllMetrics(maxValue, step))}>
                     Run All Metrics in Web
                 </a>
                 <a
