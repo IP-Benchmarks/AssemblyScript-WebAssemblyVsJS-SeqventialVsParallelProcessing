@@ -3,11 +3,30 @@ import { timer } from '@ip/benchmark/glue/performance-counter';
 import { IMetrics } from './../interfaces/metrics.interface';
 
 export class Metrics implements IMetrics {
-    loadTime = new Map<string, number | string>();
-    computingTime = new Map<string, number | string>();
+    loadTime = {};
+    computingTime = {};
     startTime: number | undefined;
 
-    constructor(public arrayLength: number) {}
+    constructor(public arrayLength: number, reconstructObject?: IMetrics) {
+        if (reconstructObject) {
+            this.loadTime = reconstructObject.loadTime ?? {};
+            this.computingTime = reconstructObject.computingTime ?? {};
+            arrayLength = reconstructObject.arrayLength;
+        }
+    }
+    loadTimeEntries() {
+        return Object.entries(this.loadTime) as Array<[string, string | number]>;
+    }
+    computingTimeEntries() {
+        return Object.entries(this.computingTime) as Array<[string, string | number]>;
+    }
+
+    setLoadTime(key: string, value: string | number) {
+        this.loadTime[key] = value;
+    }
+    setComputingTime(key: string, value: string | number) {
+        this.computingTime[key] = value;
+    }
     start() {
         this.startTime = timer().now();
     }
@@ -19,10 +38,12 @@ export class Metrics implements IMetrics {
 export function metricsToMarkdownTable(metrics: IMetrics[]) {
     console.log(metrics);
     const createHeaderLoadingTime = (metric: IMetrics) => {
-        const loadTime = Array.from(metric.loadTime.keys())
-            .map((x) => ` ${x} (ms) |`)
+        const loadTime = metric
+            .loadTimeEntries()
+            .map(([x]) => ` ${x} (ms) |`)
             .join('');
-        const loadTimeSlots = Array.from(metric.loadTime.keys())
+        const loadTimeSlots = metric
+            .loadTimeEntries()
             .map(() => ' - |')
             .join('');
         return `
@@ -31,11 +52,13 @@ export function metricsToMarkdownTable(metrics: IMetrics[]) {
         `;
     };
     const createHeaderComputingTime = (metric: IMetrics) => {
-        const computingTime = Array.from(metric.computingTime.keys())
-            .map((x) => ` ${x} (ms) |`)
+        const computingTime = metric
+            .computingTimeEntries()
+            .map(([x]) => ` ${x} (ms) |`)
             .join('');
 
-        const computingTimeSlots = Array.from(metric.computingTime.keys())
+        const computingTimeSlots = metric
+            .computingTimeEntries()
             .map(() => ' - |')
             .join('');
 
@@ -46,8 +69,9 @@ export function metricsToMarkdownTable(metrics: IMetrics[]) {
     };
     const createBodyLoadingTime = (metrics: IMetrics[]) => {
         const loadTime = (metric: IMetrics) =>
-            Array.from(metric.loadTime.values())
-                .map((x) => ` ${x} |`)
+            metric
+                .loadTimeEntries()
+                .map(([_, x]) => ` ${x} |`)
                 .join('');
 
         return metrics
@@ -60,8 +84,9 @@ export function metricsToMarkdownTable(metrics: IMetrics[]) {
 
     const createBodyComputingTime = (metrics: IMetrics[]) => {
         const computingTime = (metric: IMetrics) =>
-            Array.from(metric.computingTime.values())
-                .map((x) => ` ${x} |`)
+            metric
+                .computingTimeEntries()
+                .map(([_, x]) => ` ${x} |`)
                 .join('');
         return metrics
             .map(

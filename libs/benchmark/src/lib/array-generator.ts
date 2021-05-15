@@ -10,7 +10,7 @@ export async function arrayGeneratorWasm(length: number, min: number, max: numbe
 
     const wasmModule = await loadWasmModule<typeof ArrayGeneratorWasm>('./assets/wasm/array-generator/optimized.wasm');
 
-    metrics.loadTime.set(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Wasm}`, metrics.stop());
+    metrics.setLoadTime(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Wasm}`, metrics.stop());
     metrics.start();
 
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
@@ -19,7 +19,7 @@ export async function arrayGeneratorWasm(length: number, min: number, max: numbe
     const array = __getArray(arrayPtr);
 
     // console.log('Generated values:', jsArray.join(', '));
-    metrics.computingTime.set(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Wasm}`, metrics.stop());
+    metrics.setComputingTime(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Wasm}`, metrics.stop());
 
     __unpin(arrayPtr);
     return array;
@@ -30,14 +30,14 @@ export async function arrayGeneratorJs(length: number, min: number, max: number,
 
     const jsModule = loadJsModule<typeof ArrayGenerator>(await import('@ip/wasm-generated-js-import/array-generator.js'));
 
-    metrics.loadTime.set(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Js}`, metrics.stop());
+    metrics.setLoadTime(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Js}`, metrics.stop());
     metrics.start();
 
     let array = jsModule.createArray(length);
     array = jsModule.fillArray(array, min, max);
 
     // console.log('Generated values:', array.join(', '));
-    metrics.computingTime.set(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Js}`, metrics.stop());
+    metrics.setComputingTime(`${MetricsTypes.ArrayGeneration} - ${MetricsTypes.Js}`, metrics.stop());
 
     return array;
 }

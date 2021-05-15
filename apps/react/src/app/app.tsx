@@ -1,4 +1,4 @@
-import { IMetrics, runAllMetrics } from '@ip/benchmark';
+import { IMetrics, Metrics, runAllMetrics } from '@ip/benchmark';
 import React, { useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 
@@ -14,7 +14,7 @@ export function App() {
 
     function metricsToTable(metrics: IMetrics[]) {
         const createHeaderLoadTime = (metric: IMetrics) => {
-            const loadTime = Array.from(metric.loadTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
+            const loadTime = metric.loadTimeEntries().map(([x]) => <th key={x}>{x + ' (ms)'}</th>);
 
             return (
                 <tr>
@@ -25,7 +25,7 @@ export function App() {
         };
 
         const createHeaderComputingTime = (metric: IMetrics) => {
-            const computingTime = Array.from(metric.computingTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
+            const computingTime = metric.computingTimeEntries().map(([x]) => <th key={x}>{x + ' (ms)'}</th>);
 
             return (
                 <tr>
@@ -35,8 +35,7 @@ export function App() {
             );
         };
         const createBodyLoadTime = (metrics: IMetrics[]) => {
-            const loadTime = (metric: IMetrics, index: number) =>
-                Array.from(metric.loadTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
+            const loadTime = (metric: IMetrics, index: number) => metric.loadTimeEntries().map(([key, value]) => <td key={key + index}>{value}</td>);
 
             return metrics.map((metric, index) => (
                 <tr key={index} className={index === 0 ? 'red' : ''} data-tip={index === 0 ? 'Before JIT' : 'After JIT'}>
@@ -47,8 +46,7 @@ export function App() {
         };
 
         const createBodyComputingTime = (metrics: IMetrics[]) => {
-            const computingTime = (metric: IMetrics, index: number) =>
-                Array.from(metric.computingTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
+            const computingTime = (metric: IMetrics, index: number) => metric.computingTimeEntries().map(([key, value]) => <td key={key + index}>{value}</td>);
 
             return metrics.map((metric, index) => (
                 <tr key={index} className={index === 0 ? 'red' : ''} data-tip={index === 0 ? 'Before JIT' : 'After JIT'}>
@@ -77,8 +75,8 @@ export function App() {
         );
     }
 
-    const [webMetrics, setWebMetrics] = useState<any[]>();
-    const [serverMetrics, setServerMetrics] = useState<any[]>();
+    const [webMetrics, setWebMetrics] = useState<IMetrics[]>();
+    const [serverMetrics, setServerMetrics] = useState<IMetrics[]>();
 
     return (
         <div>
@@ -86,7 +84,11 @@ export function App() {
                 <a href="#" className="button" onClick={async () => setWebMetrics(await runAllMetrics())}>
                     Run All Metrics in Web
                 </a>
-                <a href="#" className="button" onClick={async () => setServerMetrics(await getData('/metrics'))}>
+                <a
+                    href="#"
+                    className="button"
+                    onClick={async () => setServerMetrics(await getData('/metrics').then((metrics) => metrics.map((x) => new Metrics(0, x))))}
+                >
                     Run All Metrics on Server
                 </a>
             </div>

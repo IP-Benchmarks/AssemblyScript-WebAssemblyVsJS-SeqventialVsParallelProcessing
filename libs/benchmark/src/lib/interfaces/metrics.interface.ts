@@ -1,10 +1,15 @@
 export interface IMetrics {
     arrayLength: number;
-    loadTime: Map<string, number | string>;
-    computingTime: Map<string, number | string>;
+    loadTime: Record<string, number | string>;
+    computingTime: Record<string, number | string>;
 
     start: () => void;
     stop: () => string;
+
+    loadTimeEntries: () => Array<[string, number | string]>;
+    computingTimeEntries: () => Array<[string, number | string]>;
+    setLoadTime(key: string, value: string | number): void;
+    setComputingTime(key: string, value: string | number): void;
 }
 
 export enum MetricsTypes {

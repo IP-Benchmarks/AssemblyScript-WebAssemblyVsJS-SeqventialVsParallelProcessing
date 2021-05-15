@@ -9,7 +9,7 @@ export async function quickSortWasm(array: number[], metrics: IMetrics) {
 
     const wasmModule = await loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm');
 
-    metrics.loadTime.set(`${MetricsTypes.QuickSort} - ${MetricsTypes.Wasm} - `, metrics.stop());
+    metrics.setLoadTime(`${MetricsTypes.QuickSort} - ${MetricsTypes.Wasm}`, metrics.stop());
     metrics.start();
 
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
@@ -17,7 +17,7 @@ export async function quickSortWasm(array: number[], metrics: IMetrics) {
     wasmModule.quickSort(arrayPtr);
     let sortedArr = __getArray(arrayPtr);
 
-    metrics.computingTime.set(`${MetricsTypes.QuickSort} - ${MetricsTypes.Wasm}`, metrics.stop());
+    metrics.setComputingTime(`${MetricsTypes.QuickSort} - ${MetricsTypes.Wasm}`, metrics.stop());
 
     __unpin(arrayPtr);
     return sortedArr;
@@ -28,11 +28,11 @@ export async function quickSortJs(array: number[], metrics: IMetrics) {
 
     const jsModule = loadJsModule<typeof QuickSort>(await import('@ip/wasm-generated-js-import/quicksort.js'));
 
-    metrics.loadTime.set(`${MetricsTypes.QuickSort} - ${MetricsTypes.Js}`, metrics.stop());
+    metrics.setLoadTime(`${MetricsTypes.QuickSort} - ${MetricsTypes.Js}`, metrics.stop());
     metrics.start();
 
     const sortedArr = jsModule.quickSort(array);
 
-    metrics.computingTime.set(`${MetricsTypes.QuickSort} - ${MetricsTypes.Js}`, metrics.stop());
+    metrics.setComputingTime(`${MetricsTypes.QuickSort} - ${MetricsTypes.Js}`, metrics.stop());
     return sortedArr;
 }
