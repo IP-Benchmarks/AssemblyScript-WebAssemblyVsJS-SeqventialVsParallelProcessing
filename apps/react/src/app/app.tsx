@@ -1,5 +1,6 @@
 import { IMetrics, runAllMetrics } from '@ip/benchmark';
 import React, { useState } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 import { getData } from './shared/api';
 
@@ -13,8 +14,8 @@ export function App() {
 
     function metricsToTable(metrics: IMetrics[]) {
         function createHeader(metric: IMetrics) {
-            const loadTime = Array.from(metric.loadTime.keys()).map((x) => <th key={x}>{x}</th>);
-            const computingTime = Array.from(metric.computingTime.keys()).map((x) => <th key={x}>{x}</th>);
+            const loadTime = Array.from(metric.loadTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
+            const computingTime = Array.from(metric.computingTime.keys()).map((x) => <th key={x}>{x + ' (ms)'}</th>);
 
             return (
                 <tr>
@@ -32,7 +33,7 @@ export function App() {
                 Array.from(metric.computingTime.entries()).map(([key, value]) => <td key={key + index}>{value}</td>);
 
             return metrics.map((metric, index) => (
-                <tr>
+                <tr key={index} className={index === 0 ? 'red' : ''} data-tip={index === 0 ? 'Before JIT' : 'After JIT'}>
                     <td key={'Amount of numbers' + index}>{metric.arrayLength}</td>
                     {loadTime(metric, index)}
                     {computingTime(metric, index)}
@@ -41,7 +42,9 @@ export function App() {
         }
         if (metrics.length === 0) return <table></table>;
         return (
-            <table>
+            <table className="table">
+                <ReactTooltip />
+
                 <thead>{createHeader(metrics[0])}</thead>
                 <tbody>{createBody(metrics)}</tbody>
             </table>
@@ -54,15 +57,27 @@ export function App() {
     return (
         <div>
             <div className="button-wrapper">
-                <button className="button" onClick={async () => setWebMetrics(await runAllMetrics())}>
+                <a href="#" className="button" onClick={async () => setWebMetrics(await runAllMetrics())}>
                     Run All Metrics in Web
-                </button>
-                <button className="button" onClick={async () => setServerMetrics(await getData('/metrics'))}>
+                </a>
+                <a href="#" className="button" onClick={async () => setServerMetrics(await getData('/metrics'))}>
                     Run All Metrics on Server
-                </button>
+                </a>
             </div>
-            <div>{webMetrics ? metricsToTable(webMetrics) : null}</div>
-            <div>{serverMetrics ? metricsToTable(serverMetrics) : null}</div>
+
+            {webMetrics ? (
+                <div>
+                    <h1 className="heading">Web Metrics</h1>
+                    {metricsToTable(webMetrics)}
+                </div>
+            ) : null}
+
+            {serverMetrics ? (
+                <div>
+                    <h1 className="heading">Server Metrics</h1>
+                    {metricsToTable(serverMetrics)}
+                </div>
+            ) : null}
         </div>
     );
 }

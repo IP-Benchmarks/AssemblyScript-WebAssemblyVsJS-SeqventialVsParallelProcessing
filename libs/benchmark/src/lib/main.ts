@@ -74,7 +74,7 @@ export async function runAllMetrics() {
 
     // const workers = [1, 2, 5, 10, 50, 100, 1000];
 
-    const arraySizes = [50, 25, 10, 5, 3];
+    const arraySizes = [50, 50, 25, 10, 5, 3];
 
     const workers = [1, 2, 5];
     for (let i = 0; i < arraySizes.length; i++) {
