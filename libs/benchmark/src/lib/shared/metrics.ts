@@ -18,43 +18,59 @@ export class Metrics implements IMetrics {
 
 export function metricsToMarkdownTable(metrics: IMetrics[]) {
     console.log(metrics);
-    function createHeader(metric: IMetrics) {
+    const createHeaderLoadingTime = (metric: IMetrics) => {
         const loadTime = Array.from(metric.loadTime.keys())
             .map((x) => ` ${x} (ms) |`)
             .join('');
+        const loadTimeSlots = Array.from(metric.loadTime.keys())
+            .map(() => ' - |')
+            .join('');
+        return `
+        | Amount of numbers | ${loadTime} 
+        | - | ${loadTimeSlots} 
+        `;
+    };
+    const createHeaderComputingTime = (metric: IMetrics) => {
         const computingTime = Array.from(metric.computingTime.keys())
             .map((x) => ` ${x} (ms) |`)
             .join('');
 
-        const loadTimeSlots = Array.from(metric.loadTime.keys())
-            .map(() => ' - |')
-            .join('');
         const computingTimeSlots = Array.from(metric.computingTime.keys())
             .map(() => ' - |')
             .join('');
 
         return `
-        | Amount of numbers | ${loadTime} ${computingTime}
-        | - | ${loadTimeSlots} ${computingTimeSlots}
+        | Amount of numbers | ${computingTime}
+        | - |  ${computingTimeSlots}
         `;
-    }
-
-    function createBody(metrics: IMetrics[]) {
+    };
+    const createBodyLoadingTime = (metrics: IMetrics[]) => {
         const loadTime = (metric: IMetrics) =>
             Array.from(metric.loadTime.values())
                 .map((x) => ` ${x} |`)
                 .join('');
+
+        return metrics
+            .map(
+                (metric) => `| ${metric.arrayLength} | ${loadTime(metric)} 
+        `
+            )
+            .join('');
+    };
+
+    const createBodyComputingTime = (metrics: IMetrics[]) => {
         const computingTime = (metric: IMetrics) =>
             Array.from(metric.computingTime.values())
                 .map((x) => ` ${x} |`)
                 .join('');
         return metrics
             .map(
-                (metric) => `| ${metric.arrayLength} | ${loadTime(metric)} ${computingTime(metric)}
+                (metric) => `| ${metric.arrayLength} |  ${computingTime(metric)}
         `
             )
             .join('');
-    }
+    };
     if (metrics.length === 0) return '';
-    return createHeader(metrics[0]) + createBody(metrics);
+    return `${createHeaderLoadingTime(metrics[0])} ${createBodyLoadingTime(metrics)}  
+    ${createHeaderComputingTime(metrics[0])} ${createBodyComputingTime(metrics)}`;
 }

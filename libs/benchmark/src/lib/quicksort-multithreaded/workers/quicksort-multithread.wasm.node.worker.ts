@@ -1,3 +1,4 @@
+import { ASUtil } from '@assemblyscript/loader';
 import { loadWasmModule } from '@ip/benchmark/glue/module-loader';
 import { parentPort, workerData } from 'worker_threads';
 
@@ -5,7 +6,9 @@ import { parentPort, workerData } from 'worker_threads';
 const self = globalThis;
 
 import type { QuickSortWasm } from '@ip/wasm-generated-js';
-loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm').then((wasmModule) => {
+let wasmModule: typeof QuickSortWasm & ASUtil;
+parentPort.on('message', async (workerData) => {
+    if (!wasmModule) wasmModule = await loadWasmModule<typeof QuickSortWasm>('./assets/wasm/quicksort/optimized.wasm');
     const { __pin, __unpin, __newArray, __getArray, __getArrayView } = wasmModule;
     const { array } = workerData;
 

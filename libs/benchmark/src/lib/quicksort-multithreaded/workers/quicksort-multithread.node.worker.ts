@@ -5,9 +5,9 @@ import { parentPort, workerData } from 'worker_threads';
 const self = globalThis;
 
 import type { QuickSort } from '@ip/wasm-generated-js';
-
-import('@ip/wasm-generated-js-import/quicksort.js').then((module) => {
-    const jsModule = loadJsModule<typeof QuickSort>(module);
+let jsModule: typeof QuickSort;
+parentPort.on('message', async (workerData) => {
+    if (!jsModule) jsModule = loadJsModule<typeof QuickSort>(await import('@ip/wasm-generated-js-import/quicksort.js'));
     const { array } = workerData;
 
     const sortedArr = jsModule.quickSort(array);
