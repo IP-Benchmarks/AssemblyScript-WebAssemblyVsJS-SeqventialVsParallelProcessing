@@ -52,7 +52,7 @@ async function runWorker(array: number[], workerNumber: number, workerType: 'was
     }
 
     const results2 = await Promise.all(workerPromises);
-    metrics.setComputingTime(`${MetricsTypes.QuickSortMultithreaded} - ${workerNumber} Workers - Workers Loaded - ${type}`, metrics.stop());
+    metrics.setComputingTime(`${MetricsTypes.QuickSortMultithreaded} - Workers Loaded - ${workerNumber} Workers - ${type}`, metrics.stop());
     testArray(results.flat(), results2.flat(), 'Multithreaded reiteration failed');
     workers.forEach((worker) => worker.terminate());
     return results.flat();

@@ -42,20 +42,20 @@ export function metricsTo(
     bodyCallback: (callback: (metric: IMetrics) => Array<[string, string | number]>) => any
 ) {
     const createHeaderLoadTime = (metric: IMetrics) => {
-        return headerCallback(metric.loadTimeEntries());
+        return headerCallback(metric.loadTimeEntries().sort(([a], [b]) => a.localeCompare(b)));
     };
 
     const createHeaderComputingTime = (metric: IMetrics) => {
-        return headerCallback(metric.computingTimeEntries());
+        return headerCallback(metric.computingTimeEntries().sort(([a], [b]) => a.localeCompare(b)));
     };
 
     const createBodyLoadTime = () => {
-        const loadTime = (metric: IMetrics) => metric.loadTimeEntries();
+        const loadTime = (metric: IMetrics) => metric.loadTimeEntries().sort(([a], [b]) => a.localeCompare(b));
         return bodyCallback(loadTime);
     };
 
     const createBodyComputingTime = () => {
-        const computingTime = (metric: IMetrics) => metric.computingTimeEntries();
+        const computingTime = (metric: IMetrics) => metric.computingTimeEntries().sort(([a], [b]) => a.localeCompare(b));
         return bodyCallback(computingTime);
     };
 
