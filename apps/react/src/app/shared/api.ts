@@ -1,4 +1,4 @@
-export async function postData(endpoint = '', baseUrl = 'http://localhost:3333/api', data = {}) {
+export async function postData(endpoint = '', data = {}, baseUrl = 'http://localhost:3333/api') {
     const response = await fetch(baseUrl + endpoint, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin

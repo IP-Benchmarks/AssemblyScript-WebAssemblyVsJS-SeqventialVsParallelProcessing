@@ -9,9 +9,10 @@ export class Metrics implements IMetrics {
 
     constructor(public arrayLength: number, reconstructObject?: IMetrics) {
         if (reconstructObject) {
+            console.log(reconstructObject);
             this.loadTime = reconstructObject.loadTime ?? {};
             this.computingTime = reconstructObject.computingTime ?? {};
-            arrayLength = reconstructObject.arrayLength;
+            this.arrayLength = Number(reconstructObject.arrayLength);
         }
     }
     loadTimeEntries() {
@@ -35,67 +36,74 @@ export class Metrics implements IMetrics {
     }
 }
 
-export function metricsToMarkdownTable(metrics: IMetrics[]) {
-    console.log(metrics);
-    const createHeaderLoadingTime = (metric: IMetrics) => {
-        const loadTime = metric
-            .loadTimeEntries()
-            .map(([x]) => ` ${x} (ms) |`)
-            .join('');
-        const loadTimeSlots = metric
-            .loadTimeEntries()
-            .map(() => ' - |')
-            .join('');
-        return `
-        | Amount of numbers | ${loadTime} 
-        | - | ${loadTimeSlots} 
-        `;
+export function metricsTo(
+    metrics: IMetrics[],
+    headerCallback: (values: Array<[string, string | number]>) => any,
+    bodyCallback: (callback: (metric: IMetrics) => Array<[string, string | number]>) => any
+) {
+    const createHeaderLoadTime = (metric: IMetrics) => {
+        return headerCallback(metric.loadTimeEntries());
     };
+
     const createHeaderComputingTime = (metric: IMetrics) => {
-        const computingTime = metric
-            .computingTimeEntries()
-            .map(([x]) => ` ${x} (ms) |`)
-            .join('');
-
-        const computingTimeSlots = metric
-            .computingTimeEntries()
-            .map(() => ' - |')
-            .join('');
-
-        return `
-        | Amount of numbers | ${computingTime}
-        | - |  ${computingTimeSlots}
-        `;
+        return headerCallback(metric.computingTimeEntries());
     };
-    const createBodyLoadingTime = (metrics: IMetrics[]) => {
-        const loadTime = (metric: IMetrics) =>
-            metric
-                .loadTimeEntries()
-                .map(([_, x]) => ` ${x} |`)
+
+    const createBodyLoadTime = () => {
+        const loadTime = (metric: IMetrics) => metric.loadTimeEntries();
+        return bodyCallback(loadTime);
+    };
+
+    const createBodyComputingTime = () => {
+        const computingTime = (metric: IMetrics) => metric.computingTimeEntries();
+        return bodyCallback(computingTime);
+    };
+
+    return {
+        headerLoadingTime: createHeaderLoadTime(metrics[0]),
+        headerComputingTime: createHeaderComputingTime(metrics[0]),
+        bodyLoadingTime: createBodyLoadTime(),
+        bodyComputingTime: createBodyComputingTime(),
+    };
+}
+
+export function metricsToMarkdownTable(metrics: IMetrics[]) {
+    const results = metricsTo(
+        metrics,
+        (entries) => {
+            const headers = entries.map(([x]) => ` ${x} (ms) |`).join('');
+            const headersSlots = entries.map(() => ' - |').join('');
+            return `
+    | Amount of numbers | ${headers} 
+    | - | ${headersSlots} 
+    `;
+        },
+        (callback) => {
+            const loadTime = (metric: IMetrics) =>
+                callback(metric)
+                    .map(([_, x]) => ` ${x} |`)
+                    .join('');
+
+            return metrics
+                .map(
+                    (metric) => `| ${metric.arrayLength} | ${loadTime(metric)} 
+    `
+                )
                 .join('');
+        }
+    );
+    return results;
+}
 
-        return metrics
-            .map(
-                (metric) => `| ${metric.arrayLength} | ${loadTime(metric)} 
-        `
-            )
-            .join('');
-    };
+export function metricsToCsv(metrics: IMetrics[]) {
+    const results = metricsTo(
+        metrics,
+        (entries) => 'Amount of numbers, ' + entries.map(([x]) => `${x} (ms)`).join(',') + '\n',
+        (callback) => {
+            const computations = (metric: IMetrics) => callback(metric).map(([key, value]) => value);
 
-    const createBodyComputingTime = (metrics: IMetrics[]) => {
-        const computingTime = (metric: IMetrics) =>
-            metric
-                .computingTimeEntries()
-                .map(([_, x]) => ` ${x} |`)
-                .join('');
-        return metrics
-            .map(
-                (metric) => `| ${metric.arrayLength} |  ${computingTime(metric)}
-        `
-            )
-            .join('');
-    };
-    if (metrics.length === 0) return '';
-    return `${createHeaderLoadingTime(metrics[0])} ${createBodyLoadingTime(metrics)}  
-    ${createHeaderComputingTime(metrics[0])} ${createBodyComputingTime(metrics)}`;
+            return metrics.map((metric) => `${metric.arrayLength}` + computations(metric).join(',')).join('\n');
+        }
+    );
+    return results;
 }
