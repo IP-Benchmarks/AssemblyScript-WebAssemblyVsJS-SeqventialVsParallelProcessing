@@ -74,8 +74,8 @@ export function metricsToMarkdownTable(metrics: IMetrics[]) {
             const headers = entries.map(([x]) => ` ${x} (ms) |`).join('');
             const headersSlots = entries.map(() => ' - |').join('');
             return `
-    | Amount of numbers | ${headers} 
-    | - | ${headersSlots} 
+| Amount of numbers | ${headers} 
+| - | ${headersSlots} 
     `;
         },
         (callback) => {
@@ -87,7 +87,7 @@ export function metricsToMarkdownTable(metrics: IMetrics[]) {
             return metrics
                 .map(
                     (metric) => `| ${metric.arrayLength} | ${loadTime(metric)} 
-    `
+`
                 )
                 .join('');
         }
