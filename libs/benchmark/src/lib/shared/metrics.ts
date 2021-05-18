@@ -102,7 +102,7 @@ export function metricsToCsv(metrics: IMetrics[]) {
         (callback) => {
             const computations = (metric: IMetrics) => callback(metric).map(([key, value]) => value);
 
-            return metrics.map((metric) => `${metric.arrayLength}` + computations(metric).join(',')).join('\n');
+            return metrics.map((metric) => `${metric.arrayLength},` + computations(metric).join(',')).join('\n');
         }
     );
     return results;

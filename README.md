@@ -76,8 +76,15 @@ The data is created only on one specific computer. The values presented bellow s
 | 10000000          | 426.396                            | 279.503                      | 1434.620                    | 1801.430              | 3887.723                                               | 3899.086                                         | 3979.098                                               | 4168.212                                         | 6696.733                                              | 6553.044                                        | 4731.162                                              | 4798.405                                        | 4198.529                                              | 3869.211                                        | 3873.141                                                                | 4013.326                                                          | 3922.114                                                                | 3740.145                                                          | 6439.529                                                               | 6487.329                                                         | 4802.179                                                               | 4851.848                                                         | 4119.786                                                               | 3847.464                                                         |
 | 20000000          | 936.053                            | 555.872                      | 3041.645                    | 3831.902              | 8518.026                                               | 8998.820                                         | 8913.640                                               | 8644.447                                         | 12693.280                                             | 15182.425                                       | 10926.712                                             | 11238.635                                       | 9105.667                                              | 9382.167                                        | 8399.818                                                                | 8691.340                                                          | 8662.347                                                                | 8105.311                                                          | 12336.879                                                              | 13969.178                                                        | 10894.942                                                              | 10450.538                                                        | 9206.344                                                               | 8977.881                                                         |
 
-Array generation time in js is invalid, needs to be updated
-after adding -O3 and shrink lvl 0 + unchecked on the array the speed increased so a new batch of data needs to be compiled.
+
+# Methodology
+
+- All the timings are taken without interfering with the actual computing or loading
+- The code analyzed is compiled from the same source code to Js and WASM
+- The unused glue code written to make the application run on different runtimes is removed in the compilation phase 
+- All versions of the code have the overhead of Webpack included, even though NodeJs didn't need it
+- The WASM is compiled with maximum optimizations enabled
+- + 
 
 # Constraints
 
