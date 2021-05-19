@@ -10,8 +10,8 @@ export class Metrics implements IMetrics {
     constructor(public arrayLength: number, reconstructObject?: IMetrics) {
         if (reconstructObject) {
             console.log(reconstructObject);
-            this.loadTime = reconstructObject.loadTime ?? {};
-            this.computingTime = reconstructObject.computingTime ?? {};
+            this.loadTime = reconstructObject.loadTime ? reconstructObject.loadTime : {};
+            this.computingTime = reconstructObject.computingTime ? reconstructObject.computingTime : {};
             this.arrayLength = Number(reconstructObject.arrayLength);
         }
     }
