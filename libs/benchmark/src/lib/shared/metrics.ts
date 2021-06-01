@@ -75,8 +75,7 @@ export function metricsToMarkdownTable(metrics: IMetrics[]) {
             const headersSlots = entries.map(() => ' - |').join('');
             return `
 | Amount of numbers | ${headers} 
-| - | ${headersSlots} 
-    `;
+| - | ${headersSlots}`;
         },
         (callback) => {
             const loadTime = (metric: IMetrics) =>
